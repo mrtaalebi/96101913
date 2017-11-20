@@ -119,17 +119,23 @@ int runACycle();
 
 void makeANewRoom();
 
-void movePacmanToEat(Point point, Direction direction);
+void movePacmanToEat();
 
 void pacmanBecomeAHero();
 
-int pacmanHitAGhost(Ghost * ghost);
+void pacmanHitAGhost(Ghost * ghost);
 
-int movePacmanToGhosts(Point point);
+void movePacmanToGhosts();
 
 bool areOnTheSamePosition(Point p1, Point p2);
 
-int checkRemaningFoodsAndScorePacman();
+int checkRemainingFoods();
+
+void ghostBecomeDefensive(Ghost * ghost);
+
+void restartRoomByPacmanDeath();
+
+void restartAGhostByPacmanDeath(Ghost *ghost);
 
 void log(char * s);
 
@@ -221,49 +227,13 @@ int main() {
           &inky.position.y
     );
 
-    /// gameReport();
-
-    /*
-    int gameOver = 0;
-    while (!gameOver) {
-        int status = runACycle();
-        switch (status) {
-            case 0:
-                break;
-            case 1:
-                gameOver = 1;
-                break;
-            case 2:
-                pacman.position = pacman.startPoint;
-                blinky.position = blinky.startPoint;
-                pinky.position = pinky.startPoint;
-                clyde.position = clyde.startPoint;
-                inky.position = inky.startPoint;
-                break;
-            case 3:
-                makeANewRoom();
-                break;
-            default:
-                return 100;
-        }
-    }
-    */
 
 
-    int status = runACycle();
-    if (status == 1 || status == 2) {
-        pacman.position = pacman.startPoint;
-        blinky.position = blinky.startPoint;
-        pinky.position = pinky.startPoint;
-        clyde.position = clyde.startPoint;
-        inky.position = inky.startPoint;
-    }
+
+    int win = runACycle();
     printf("(%d,%d)\n", pacman.position.x, pacman.position.y);
-    int foodsLeft = checkRemaningFoodsAndScorePacman();
     printf("%d\n", pacman.score.totalScore);
-    if (status == 1) {
-        printf("No\n");
-    } else if (foodsLeft == 0) {
+    if (win) {
         printf("Yes\n");
     } else {
         printf("No\n");
@@ -281,16 +251,14 @@ int main() {
 /// returns 2: loose a heart start from starting point
 int runACycle() {
     // move pacman to eat foods
-    movePacmanToEat(pacman.position, pacman.direction);
+    movePacmanToEat();
     // move pacman to hit ghosts
-    int whatHappensMovingPacmanToGhosts = movePacmanToGhosts(pacman.position);
-    if (whatHappensMovingPacmanToGhosts > 0) {
-        pacman.hearts--;
-        if (pacman.hearts == 0) return 1;
-        else return 2;
-    } else {
-        return 0;
-    }
+    movePacmanToGhosts();
+    // eat and check winning condition
+    int foodsLeft = checkRemainingFoods();
+    if (foodsLeft == 0 && pacman.hearts > 0) {
+        return 1;
+    } else return 0;
 }
 
 
@@ -321,7 +289,7 @@ void pacman_init() {
     pacman.heroicTimeLeft = 0;
 }
 
-int checkRemaningFoodsAndScorePacman() {
+int checkRemainingFoods() {
     int foodsLeft = 0;
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
@@ -330,55 +298,50 @@ int checkRemaningFoodsAndScorePacman() {
                 foodsLeft++;
         }
     }
-
-    // giving score
-    pacman.score.totalScore +=
-            pacman.score.cherryCount * CHERRY_VALUE +
-            pacman.score.cheeseCount * CHEESE_VALUE +
-            pacman.score.ghostsKilled * GHOST_EAT_VALUE;
-
     return foodsLeft;
 }
 
 /// returns 0: stay
 /// returns 1: pacman moved
-void movePacmanToEat(Point point, Direction direction) {
-    Point result = point;
-    switch (direction) {
+void movePacmanToEat() {
+    Point newPoint = pacman.position;
+    switch (pacman.direction) {
         case UP:
-            result.x = (point.x - 1) % m;
+            newPoint.x = (newPoint.x - 1) % m;
             break;
         case RIGHT:
-            result.y = (point.y + 1) % n;
+            newPoint.y = (newPoint.y + 1) % n;
             break;
         case DOWN:
-            result.x = (point.x + 1) % m;
+            newPoint.x = (newPoint.x + 1) % m;
             break;
         case LEFT:
-            result.y = (point.y - 1) % n;
+            newPoint.y = (newPoint.y - 1) % n;
             break;
     }
-    Icons nextStep = (Icons) room[result.x][result.y];
+    Icons nextStep = (Icons) room[newPoint.x][newPoint.y];
     if (nextStep != BLOCK) {
-        switch (nextStep) {
-            case CHEESE:
-                room[result.x][result.y] = EMPTY;
-                pacman.score.cheeseCount++;
-                break;
-            case CHERRY:
-                room[result.x][result.y] = EMPTY;
-                pacman.score.cherryCount++;
-                break;
-            case PINEAPPLE:
-                room[result.x][result.y] = EMPTY;
-                pacman.score.pineappleCount++;
-                pacmanBecomeAHero();
-                break;
-            default:
-                break;
-        }
-        pacman.position.x = result.x;
-        pacman.position.y = result.y;
+        pacman.position = newPoint;
+    }
+    Icons pacmanOn = (Icons) room[pacman.position.x][pacman.position.y];
+    switch (pacmanOn) {
+        case CHEESE:
+            room[pacman.position.x][pacman.position.y] = EMPTY;
+            pacman.score.cheeseCount++;
+            pacman.score.totalScore += CHEESE_VALUE;
+            break;
+        case CHERRY:
+            room[pacman.position.x][pacman.position.y] = EMPTY;
+            pacman.score.cherryCount++;
+            pacman.score.totalScore += CHERRY_VALUE;
+            break;
+        case PINEAPPLE:
+            room[pacman.position.x][pacman.position.y] = EMPTY;
+            pacman.score.pineappleCount++;
+            pacmanBecomeAHero();
+            break;
+        default:
+            break;
     }
 }
 
@@ -386,49 +349,86 @@ void pacmanBecomeAHero() {
     pacman.isHero = 1;
     pacman.heroicTimeLeft = 10;
     pacman.speed = PACMAN_FAST_SPEED;
-    blinky.speed = GHOST_DEFENSIVE_SPEED;
-    pinky.speed = GHOST_DEFENSIVE_SPEED;
-    clyde.speed = GHOST_DEFENSIVE_SPEED;
-    inky.speed = GHOST_DEFENSIVE_SPEED;
+    ghostBecomeDefensive(&blinky);
+    ghostBecomeDefensive(&pinky);
+    ghostBecomeDefensive(&clyde);
+    ghostBecomeDefensive(&inky);
+}
+
+void ghostBecomeDefensive(Ghost * ghost) {
+    ghost->speed = GHOST_DEFENSIVE_SPEED;
+    ghost->isAggresive = 0;
+    ghost->defensiveTimeLeft = pacman.heroicTimeLeft;
 }
 
 
 /// returns sum of the return values of pacmanHitAGhost
-int movePacmanToGhosts(Point point) {
-    int loseCondition = 0;
-    if (areOnTheSamePosition(point, blinky.position)) {
-        loseCondition += pacmanHitAGhost(&blinky);
+void movePacmanToGhosts() {
+    Point point = pacman.position;
+    if (areOnTheSamePosition(point, blinky.position) && !blinky.isAggresive) {
+        pacmanHitAGhost(&blinky);
     }
-    if (areOnTheSamePosition(point, pinky.position)) {
-        loseCondition += pacmanHitAGhost(&pinky);
+    if (areOnTheSamePosition(point, pinky.position) && !pinky.isAggresive) {
+        pacmanHitAGhost(&pinky);
     }
-    if (areOnTheSamePosition(point, clyde.position)) {
-        loseCondition += pacmanHitAGhost(&clyde);
+    if (areOnTheSamePosition(point, clyde.position) && !clyde.isAggresive) {
+        pacmanHitAGhost(&clyde);
     }
-    if (areOnTheSamePosition(point, inky.position)) {
-        loseCondition += pacmanHitAGhost(&inky);
+    if (areOnTheSamePosition(point, inky.position) && !inky.isAggresive) {
+        pacmanHitAGhost(&inky);
     }
-    return loseCondition;
+
+    if (areOnTheSamePosition(point, blinky.position) && blinky.isAggresive) {
+        pacmanHitAGhost(&blinky);
+    }
+    if (areOnTheSamePosition(point, pinky.position) && pinky.isAggresive) {
+        pacmanHitAGhost(&pinky);
+    }
+    if (areOnTheSamePosition(point, clyde.position) && clyde.isAggresive) {
+        pacmanHitAGhost(&clyde);
+    }
+    if (areOnTheSamePosition(point, inky.position) && inky.isAggresive) {
+        pacmanHitAGhost(&inky);
+    }
 }
 
 bool areOnTheSamePosition(Point p1, Point p2) {
     return p1.x == p2.x && p1.y == p2.y;
 }
 
-
 /// returns +10: aggresive ghost
 /// returns -1: defensive ghost
-int pacmanHitAGhost(Ghost * ghost) {
+void pacmanHitAGhost(Ghost * ghost) {
     if (!ghost->isAggresive) {
         pacman.score.ghostsKilled++;
+        pacman.score.totalScore += GHOST_EAT_VALUE;
         ghost->position = ghost->startPoint;
         ghost->isAggresive = 1;
         ghost->defensiveTimeLeft = -1 * DELAY_MADE_WHEN_PACMAN_KILLS_A_GHOST;
         ghost->speed = GHOST_AGGRESIVE_SPEED;
-        return -1;
     } else {
-        return +10;
+        //TODO: that's wrong
+        restartRoomByPacmanDeath();
     }
+}
+
+void restartRoomByPacmanDeath() {
+    pacman.hearts--;
+    pacman.position = pacman.startPoint;
+    pacman.heroicTimeLeft = 0;
+    pacman.speed = PACMAN_NORMAL_SPEED;
+    pacman.isHero = 0;
+    restartAGhostByPacmanDeath(&blinky);
+    restartAGhostByPacmanDeath(&pinky);
+    restartAGhostByPacmanDeath(&clyde);
+    restartAGhostByPacmanDeath(&inky);
+}
+
+void restartAGhostByPacmanDeath(Ghost *ghost) {
+    ghost->speed = GHOST_AGGRESIVE_SPEED;
+    ghost->position = ghost->startPoint;
+    ghost->isAggresive = 1;
+    ghost->defensiveTimeLeft = 0;
 }
 
 void makeANewRoom() {
