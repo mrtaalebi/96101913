@@ -9,4 +9,6 @@
 /cygdrive/f/Directory/Projects/pacman/main.c
 stdio.h
 -
+stdbool.h
+-
 

@@ -5,18 +5,6 @@
 ///////////////////////
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -39,7 +27,7 @@ const double PACMAN_NORMAL_SPEED = 1,
         GHOST_AGGRESIVE_SPEED = 1,
         GHOST_DEFENSIVE_SPEED = 0.5;
 
-const int CHESSE_VALUE = 1,
+const int CHEESE_VALUE = 1,
         CHERRY_VALUE = 20,
         GHOST_EAT_VALUE = 50;
 
@@ -133,10 +121,17 @@ void makeANewRoom();
 
 void movePacmanToEat(Point point, Direction direction);
 
-
 void pacmanBecomeAHero();
 
 int pacmanHitAGhost(Ghost * ghost);
+
+int movePacmanToGhosts(Point point);
+
+bool areOnTheSamePosition(Point p1, Point p2);
+
+int checkRemaningFoodsAndScorePacman();
+
+void log(char * s);
 
 
 ///////////////////
@@ -146,14 +141,6 @@ int pacmanHitAGhost(Ghost * ghost);
 //////////////////
 /// main start ///
 //////////////////
-
-int movePacmanToGhosts(Point point);
-
-bool areOnTheSamePosition(Point p1, Point p2);
-
-int checkRemaningFoodsAndScorePacman() ;
-
-void log(char * s) ;
 
 int main() {
     initialize();
@@ -274,7 +261,9 @@ int main() {
     printf("(%d,%d)\n", pacman.position.x, pacman.position.y);
     int foodsLeft = checkRemaningFoodsAndScorePacman();
     printf("%d\n", pacman.score.totalScore);
-    if (foodsLeft == 0) {
+    if (status == 1) {
+        printf("No\n");
+    } else if (foodsLeft == 0) {
         printf("Yes\n");
     } else {
         printf("No\n");
@@ -282,13 +271,9 @@ int main() {
 
     //TODO: add standings
 
-    /// gameReport();
+    // gameReport();
 
     return 0;
-}
-
-void makeANewRoom() {
-
 }
 
 /// returns 0: continue current game
@@ -304,8 +289,36 @@ int runACycle() {
         if (pacman.hearts == 0) return 1;
         else return 2;
     } else {
-        return 2;
+        return 0;
     }
+}
+
+
+////////////////
+/// main end ///
+////////////////
+
+/////////////////////
+/// methods start ///
+/////////////////////
+
+void log(char * s) {
+    printf("%s", s);
+}
+
+void initialize() {
+    cycles = 0;
+    roomNumber = 1;
+    pacman_init();
+}
+
+void pacman_init() {
+    pacman.score.cheeseCount = 0;
+    pacman.score.cherryCount = 0;
+    pacman.score.pineappleCount = 0;
+    pacman.speed = PACMAN_NORMAL_SPEED;
+    pacman.isHero = 0;
+    pacman.heroicTimeLeft = 0;
 }
 
 int checkRemaningFoodsAndScorePacman() {
@@ -321,7 +334,7 @@ int checkRemaningFoodsAndScorePacman() {
     // giving score
     pacman.score.totalScore +=
             pacman.score.cherryCount * CHERRY_VALUE +
-            pacman.score.cheeseCount * CHESSE_VALUE +
+            pacman.score.cheeseCount * CHEESE_VALUE +
             pacman.score.ghostsKilled * GHOST_EAT_VALUE;
 
     return foodsLeft;
@@ -346,7 +359,7 @@ void movePacmanToEat(Point point, Direction direction) {
             break;
     }
     Icons nextStep = (Icons) room[result.x][result.y];
-    if (nextStep != BLOCK)
+    if (nextStep != BLOCK) {
         switch (nextStep) {
             case CHEESE:
                 room[result.x][result.y] = EMPTY;
@@ -364,8 +377,9 @@ void movePacmanToEat(Point point, Direction direction) {
             default:
                 break;
         }
-    pacman.position.x = result.x;
-    pacman.position.y = result.y;
+        pacman.position.x = result.x;
+        pacman.position.y = result.y;
+    }
 }
 
 void pacmanBecomeAHero() {
@@ -379,7 +393,7 @@ void pacmanBecomeAHero() {
 }
 
 
-/// returns return values of pacmanHitAGhost
+/// returns sum of the return values of pacmanHitAGhost
 int movePacmanToGhosts(Point point) {
     int loseCondition = 0;
     if (areOnTheSamePosition(point, blinky.position)) {
@@ -402,7 +416,7 @@ bool areOnTheSamePosition(Point p1, Point p2) {
 }
 
 
-/// returns +1: aggresive ghost
+/// returns +10: aggresive ghost
 /// returns -1: defensive ghost
 int pacmanHitAGhost(Ghost * ghost) {
     if (!ghost->isAggresive) {
@@ -413,35 +427,12 @@ int pacmanHitAGhost(Ghost * ghost) {
         ghost->speed = GHOST_AGGRESIVE_SPEED;
         return -1;
     } else {
-        return +1;
+        return +10;
     }
 }
 
-////////////////
-/// main end ///
-////////////////
+void makeANewRoom() {
 
-/////////////////////
-/// methods start ///
-/////////////////////
-
-void log(char * s) {
-    printf("%s", s);
-}
-
-void initialize() {
-    cycles = 0;
-    roomNumber = 1;
-    pacman_init();
-}
-
-void pacman_init() {
-    pacman.score.cheeseCount = 0;
-    pacman.score.cherryCount = 0;
-    pacman.score.pineappleCount = 0;
-    pacman.speed = 1;
-    pacman.isHero = 0;
-    pacman.heroicTimeLeft = 0;
 }
 
 void gameReport() {
@@ -449,6 +440,12 @@ void gameReport() {
     printf("======== game  report ========\n");
     printf("==============================\n\n");
     printf("=== room ===\n");
+    char out[n][m];
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            out[i][j] = room[i][j];
+        }
+    }
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
             char *s = NULL;
