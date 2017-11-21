@@ -4,7 +4,6 @@
 /// y is horizental ///
 ///////////////////////
 
-
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -148,6 +147,8 @@ void log(char * s);
 /// main start ///
 //////////////////
 
+int mod(int a, int m);
+
 int main() {
     initialize();
     scanf("%d %d\n", &n, &m);
@@ -241,7 +242,7 @@ int main() {
 
     //TODO: add standings
 
-    // gameReport();
+    //gameReport();
 
     return 0;
 }
@@ -250,6 +251,7 @@ int main() {
 /// returns 1: game over launch standings
 /// returns 2: loose a heart start from starting point
 int runACycle() {
+    cycles++;
     // move pacman to eat foods
     movePacmanToEat();
     // move pacman to hit ghosts
@@ -307,16 +309,16 @@ void movePacmanToEat() {
     Point newPoint = pacman.position;
     switch (pacman.direction) {
         case UP:
-            newPoint.x = (newPoint.x - 1) % m;
+            newPoint.x = mod(newPoint.x - 1, m);
             break;
         case RIGHT:
-            newPoint.y = (newPoint.y + 1) % n;
+            newPoint.y = mod(newPoint.y + 1, n);
             break;
         case DOWN:
-            newPoint.x = (newPoint.x + 1) % m;
+            newPoint.x = mod(newPoint.x + 1, m);
             break;
         case LEFT:
-            newPoint.y = (newPoint.y - 1) % n;
+            newPoint.y = mod(newPoint.y - 1, n);
             break;
     }
     Icons nextStep = (Icons) room[newPoint.x][newPoint.y];
@@ -345,6 +347,13 @@ void movePacmanToEat() {
     }
 }
 
+int mod(int a, int m) {
+    if (m > 0) {
+        if (a >= 0) return a % m;
+        else return m + a % m;
+    } else return -1000000000;
+}
+
 void pacmanBecomeAHero() {
     pacman.isHero = 1;
     pacman.heroicTimeLeft = 10;
@@ -365,6 +374,7 @@ void ghostBecomeDefensive(Ghost * ghost) {
 /// returns sum of the return values of pacmanHitAGhost
 void movePacmanToGhosts() {
     Point point = pacman.position;
+
     if (areOnTheSamePosition(point, blinky.position) && !blinky.isAggresive) {
         pacmanHitAGhost(&blinky);
     }
@@ -407,7 +417,6 @@ void pacmanHitAGhost(Ghost * ghost) {
         ghost->defensiveTimeLeft = -1 * DELAY_MADE_WHEN_PACMAN_KILLS_A_GHOST;
         ghost->speed = GHOST_AGGRESIVE_SPEED;
     } else {
-        //TODO: that's wrong
         restartRoomByPacmanDeath();
     }
 }
