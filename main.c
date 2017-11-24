@@ -4,12 +4,137 @@
 /// y is horizental ///
 ///////////////////////
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//todo refactor the code so we can inherit the pacman and ghosts all of them from
+//todo creature such a way reduces the code lines written
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #include <stdio.h>
 #include <stdbool.h>
 
 ///////////////////////
 /// constants start ///
-///////////////////////
+//////////////////////
 
 const int DELAY_MADE_WHEN_PACMAN_KILLS_A_GHOST = 5;
 
@@ -147,7 +272,7 @@ void log(char * s);
 /// main start ///
 //////////////////
 
-int mod(int a, int m);
+int getNextInCircular(int index, int size);
 
 int main() {
     initialize();
@@ -309,16 +434,16 @@ void movePacmanToEat() {
     Point newPoint = pacman.position;
     switch (pacman.direction) {
         case UP:
-            newPoint.x = mod(newPoint.x - 1, m);
+            newPoint.x = getNextInCircular(newPoint.x - 1, m);
             break;
         case RIGHT:
-            newPoint.y = mod(newPoint.y + 1, n);
+            newPoint.y = getNextInCircular(newPoint.y + 1, n);
             break;
         case DOWN:
-            newPoint.x = mod(newPoint.x + 1, m);
+            newPoint.x = getNextInCircular(newPoint.x + 1, m);
             break;
         case LEFT:
-            newPoint.y = mod(newPoint.y - 1, n);
+            newPoint.y = getNextInCircular(newPoint.y - 1, n);
             break;
     }
     Icons nextStep = (Icons) room[newPoint.x][newPoint.y];
@@ -347,11 +472,10 @@ void movePacmanToEat() {
     }
 }
 
-int mod(int a, int m) {
-    if (m > 0) {
-        if (a >= 0) return a % m;
-        else return m + a % m;
-    } else return -1000000000;
+int getNextInCircular(int index, int size) {
+    if (index == -1) return  size - 1;
+    else if (index >= 0 && index < size) return index;
+    else if (index == size) return 0;
 }
 
 void pacmanBecomeAHero() {
