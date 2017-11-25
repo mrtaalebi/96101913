@@ -353,28 +353,30 @@ int main() {
           &inky.position.y
     );
 
-
-
-    while (!runACycle()) {
+/*
+    int aoeu = 0;
+    while (!aoeu) {
         int d;
         scanf("%d", &d);
         enum Direction c = UP;
         switch (d) {
-            case 1: c = RIGHT;
+            case 1: c = UP;
                 break;
-            case 2: c = UP;
+            case 2: c = RIGHT;
                 break;
-            case 3: c = LEFT;
+            case 3: c = DOWN;
                 break;
-            case 4: c = DOWN;
+            case 4: c = LEFT;
                 break;
             default:
                 break;
         }
         pacman.direction = c;
+        aoeu = runACycle();
         gameReport();
-
     }
+*/
+
     int win = runACycle();
     printf("(%d,%d)\n", pacman.position.x, pacman.position.y);
     printf("%d\n", pacman.score.totalScore);
@@ -453,16 +455,16 @@ void movePacmanToEat() {
     Point newPoint = pacman.position;
     switch (pacman.direction) {
         case UP:
-            newPoint.x = getNextInCircular(newPoint.x - 1, m);
+            newPoint.x = getNextInCircular(newPoint.x - 1, n);
             break;
         case RIGHT:
-            newPoint.y = getNextInCircular(newPoint.y + 1, n);
+            newPoint.y = getNextInCircular(newPoint.y + 1, m);
             break;
         case DOWN:
-            newPoint.x = getNextInCircular(newPoint.x + 1, m);
+            newPoint.x = getNextInCircular(newPoint.x + 1, n);
             break;
         case LEFT:
-            newPoint.y = getNextInCircular(newPoint.y - 1, n);
+            newPoint.y = getNextInCircular(newPoint.y - 1, m);
             break;
     }
     Icons nextStep = (Icons) room[newPoint.x][newPoint.y];
@@ -516,31 +518,30 @@ void ghostBecomeDefensive(Ghost * ghost) {
 
 /// returns sum of the return values of pacmanHitAGhost
 void movePacmanToGhosts() {
-    Point point = pacman.position;
 
-    if (areOnTheSamePosition(point, blinky.position) && !blinky.isAggresive) {
+    if (areOnTheSamePosition(pacman.position, blinky.position) && !blinky.isAggresive) {
         pacmanHitAGhost(&blinky);
     }
-    if (areOnTheSamePosition(point, pinky.position) && !pinky.isAggresive) {
+    if (areOnTheSamePosition(pacman.position, pinky.position) && !pinky.isAggresive) {
         pacmanHitAGhost(&pinky);
     }
-    if (areOnTheSamePosition(point, clyde.position) && !clyde.isAggresive) {
+    if (areOnTheSamePosition(pacman.position, clyde.position) && !clyde.isAggresive) {
         pacmanHitAGhost(&clyde);
     }
-    if (areOnTheSamePosition(point, inky.position) && !inky.isAggresive) {
+    if (areOnTheSamePosition(pacman.position, inky.position) && !inky.isAggresive) {
         pacmanHitAGhost(&inky);
     }
 
-    if (areOnTheSamePosition(point, blinky.position) && blinky.isAggresive) {
+    if (areOnTheSamePosition(pacman.position, blinky.position) && blinky.isAggresive) {
         pacmanHitAGhost(&blinky);
     }
-    if (areOnTheSamePosition(point, pinky.position) && pinky.isAggresive) {
+    if (areOnTheSamePosition(pacman.position, pinky.position) && pinky.isAggresive) {
         pacmanHitAGhost(&pinky);
     }
-    if (areOnTheSamePosition(point, clyde.position) && clyde.isAggresive) {
+    if (areOnTheSamePosition(pacman.position, clyde.position) && clyde.isAggresive) {
         pacmanHitAGhost(&clyde);
     }
-    if (areOnTheSamePosition(point, inky.position) && inky.isAggresive) {
+    if (areOnTheSamePosition(pacman.position, inky.position) && inky.isAggresive) {
         pacmanHitAGhost(&inky);
     }
 }
@@ -593,6 +594,12 @@ void gameReport() {
     printf("==============================\n\n");
     printf("=== room ===\n");
     char out[n][m];
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            printf("%c\t", room[i][j]);
+        }
+        printf("\n");
+    }
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < m; ++j)
             out[i][j] = room[i][j];
