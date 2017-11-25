@@ -186,7 +186,7 @@ struct Point {
 struct Pacman {
     Point startPoint;
     Point position;
-    Direction direction;
+    enum Direction direction;
     int isHero;
     int heroicTimeLeft;
     Score score;
@@ -197,7 +197,7 @@ struct Pacman {
 struct Ghost {
     Point startPoint;
     Point position;
-    Direction direction;
+    enum Direction direction;
     int isAggresive;
     int defensiveTimeLeft;
     double speed;
@@ -355,7 +355,26 @@ int main() {
 
 
 
+    while (!runACycle()) {
+        int d;
+        scanf("%d", &d);
+        enum Direction c = UP;
+        switch (d) {
+            case 1: c = RIGHT;
+                break;
+            case 2: c = UP;
+                break;
+            case 3: c = LEFT;
+                break;
+            case 4: c = DOWN;
+                break;
+            default:
+                break;
+        }
+        pacman.direction = c;
+        gameReport();
 
+    }
     int win = runACycle();
     printf("(%d,%d)\n", pacman.position.x, pacman.position.y);
     printf("%d\n", pacman.score.totalScore);
@@ -574,15 +593,18 @@ void gameReport() {
     printf("==============================\n\n");
     printf("=== room ===\n");
     char out[n][m];
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < m; ++j) {
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < m; ++j)
             out[i][j] = room[i][j];
-        }
-    }
+    out[pacman.position.x][pacman.position.y] = 'C';
+    out[blinky.position.x][blinky.position.y] = 'B';
+    out[pinky.position.x][pinky.position.y] = 'P';
+    out[clyde.position.x][clyde.position.y] = 'L';
+    out[inky.position.x][inky.position.y] = 'I';
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
             char *s = NULL;
-            switch (room[i][j]) {
+            switch (out[i][j]) {
                 case '_':
                     s = "░";
                     break;
@@ -598,25 +620,13 @@ void gameReport() {
                 case 'O':
                     s = "●";
                     break;
-                case 'C':
-                    s = "C";
-                    break;
-                case 'B':
-                    s = "B";
-                    break;
-                case 'P':
-                    s = "P";
-                    break;
-                case 'L':
-                    s = "L";
-                    break;
-                case 'I':
-                    s = "I";
-                    break;
                 default:
+                    s = "aoeu";
                     break;
             }
-            printf("%s\t", s);
+            if (s != "aoeu")
+                printf("%s\t", s);
+            else printf("%c\t", out[i][j]);
         }
         printf("\n");
     }
