@@ -44,6 +44,12 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add directory="/home/mrtalebi/Projects/CLionProjects/pacman/src"/>
+					<Add directory="/home/mrtalebi/Projects/CLionProjects/pacman/{SDL2_INCLUDE_DIRECTORY}"/>
+					<Add directory="/home/mrtalebi/Projects/CLionProjects/pacman/{SDL2IMAGE_INCLUDE_DIRECTORY}"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
@@ -64,6 +70,12 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add directory="/home/mrtalebi/Projects/CLionProjects/pacman/src"/>
+					<Add directory="/home/mrtalebi/Projects/CLionProjects/pacman/{SDL2_INCLUDE_DIRECTORY}"/>
+					<Add directory="/home/mrtalebi/Projects/CLionProjects/pacman/{SDL2IMAGE_INCLUDE_DIRECTORY}"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
@@ -78,7 +90,31 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/main.c">
+		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/src/controler.c">
+			<Option target="pacman"/>
+		</Unit>
+		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/src/controler.h">
+			<Option target="pacman"/>
+		</Unit>
+		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/src/input.c">
+			<Option target="pacman"/>
+		</Unit>
+		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/src/input.h">
+			<Option target="pacman"/>
+		</Unit>
+		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/src/main.c">
+			<Option target="pacman"/>
+		</Unit>
+		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/src/models.c">
+			<Option target="pacman"/>
+		</Unit>
+		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/src/models.h">
+			<Option target="pacman"/>
+		</Unit>
+		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/src/view.c">
+			<Option target="pacman"/>
+		</Unit>
+		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/src/view.h">
 			<Option target="pacman"/>
 		</Unit>
 		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/CMakeLists.txt">

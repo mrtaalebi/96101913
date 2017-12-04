@@ -6,5 +6,5 @@ C_FLAGS = -g   -std=gnu99
 
 C_DEFINES = 
 
-C_INCLUDES = 
+C_INCLUDES = -I/home/mrtalebi/Projects/CLionProjects/pacman/src -I/home/mrtalebi/Projects/CLionProjects/pacman/{SDL2_INCLUDE_DIRECTORY} -I/home/mrtalebi/Projects/CLionProjects/pacman/{SDL2IMAGE_INCLUDE_DIRECTORY} 
 

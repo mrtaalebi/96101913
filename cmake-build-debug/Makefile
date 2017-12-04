@@ -123,32 +123,140 @@ pacman/fast:
 	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/build
 .PHONY : pacman/fast
 
-main.o: main.c.o
+src/controler.o: src/controler.c.o
 
-.PHONY : main.o
+.PHONY : src/controler.o
 
 # target to build an object file
-main.c.o:
-	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/main.c.o
-.PHONY : main.c.o
+src/controler.c.o:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/controler.c.o
+.PHONY : src/controler.c.o
 
-main.i: main.c.i
+src/controler.i: src/controler.c.i
 
-.PHONY : main.i
+.PHONY : src/controler.i
 
 # target to preprocess a source file
-main.c.i:
-	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/main.c.i
-.PHONY : main.c.i
+src/controler.c.i:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/controler.c.i
+.PHONY : src/controler.c.i
 
-main.s: main.c.s
+src/controler.s: src/controler.c.s
 
-.PHONY : main.s
+.PHONY : src/controler.s
 
 # target to generate assembly for a file
-main.c.s:
-	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/main.c.s
-.PHONY : main.c.s
+src/controler.c.s:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/controler.c.s
+.PHONY : src/controler.c.s
+
+src/input.o: src/input.c.o
+
+.PHONY : src/input.o
+
+# target to build an object file
+src/input.c.o:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/input.c.o
+.PHONY : src/input.c.o
+
+src/input.i: src/input.c.i
+
+.PHONY : src/input.i
+
+# target to preprocess a source file
+src/input.c.i:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/input.c.i
+.PHONY : src/input.c.i
+
+src/input.s: src/input.c.s
+
+.PHONY : src/input.s
+
+# target to generate assembly for a file
+src/input.c.s:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/input.c.s
+.PHONY : src/input.c.s
+
+src/main.o: src/main.c.o
+
+.PHONY : src/main.o
+
+# target to build an object file
+src/main.c.o:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/main.c.o
+.PHONY : src/main.c.o
+
+src/main.i: src/main.c.i
+
+.PHONY : src/main.i
+
+# target to preprocess a source file
+src/main.c.i:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/main.c.i
+.PHONY : src/main.c.i
+
+src/main.s: src/main.c.s
+
+.PHONY : src/main.s
+
+# target to generate assembly for a file
+src/main.c.s:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/main.c.s
+.PHONY : src/main.c.s
+
+src/models.o: src/models.c.o
+
+.PHONY : src/models.o
+
+# target to build an object file
+src/models.c.o:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/models.c.o
+.PHONY : src/models.c.o
+
+src/models.i: src/models.c.i
+
+.PHONY : src/models.i
+
+# target to preprocess a source file
+src/models.c.i:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/models.c.i
+.PHONY : src/models.c.i
+
+src/models.s: src/models.c.s
+
+.PHONY : src/models.s
+
+# target to generate assembly for a file
+src/models.c.s:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/models.c.s
+.PHONY : src/models.c.s
+
+src/view.o: src/view.c.o
+
+.PHONY : src/view.o
+
+# target to build an object file
+src/view.c.o:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/view.c.o
+.PHONY : src/view.c.o
+
+src/view.i: src/view.c.i
+
+.PHONY : src/view.i
+
+# target to preprocess a source file
+src/view.c.i:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/view.c.i
+.PHONY : src/view.c.i
+
+src/view.s: src/view.c.s
+
+.PHONY : src/view.s
+
+# target to generate assembly for a file
+src/view.c.s:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/view.c.s
+.PHONY : src/view.c.s
 
 # Help Target
 help:
@@ -159,9 +267,21 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... pacman"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... src/controler.o"
+	@echo "... src/controler.i"
+	@echo "... src/controler.s"
+	@echo "... src/input.o"
+	@echo "... src/input.i"
+	@echo "... src/input.s"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
+	@echo "... src/models.o"
+	@echo "... src/models.i"
+	@echo "... src/models.s"
+	@echo "... src/view.o"
+	@echo "... src/view.i"
+	@echo "... src/view.s"
 .PHONY : help
 
 

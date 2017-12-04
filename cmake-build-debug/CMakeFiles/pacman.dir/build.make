@@ -57,41 +57,145 @@ include CMakeFiles/pacman.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/pacman.dir/flags.make
 
-CMakeFiles/pacman.dir/main.c.o: CMakeFiles/pacman.dir/flags.make
-CMakeFiles/pacman.dir/main.c.o: ../main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mrtalebi/Projects/CLionProjects/pacman/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/pacman.dir/main.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/pacman.dir/main.c.o   -c /home/mrtalebi/Projects/CLionProjects/pacman/main.c
+CMakeFiles/pacman.dir/src/main.c.o: CMakeFiles/pacman.dir/flags.make
+CMakeFiles/pacman.dir/src/main.c.o: ../src/main.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mrtalebi/Projects/CLionProjects/pacman/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/pacman.dir/src/main.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/pacman.dir/src/main.c.o   -c /home/mrtalebi/Projects/CLionProjects/pacman/src/main.c
 
-CMakeFiles/pacman.dir/main.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/pacman.dir/main.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/mrtalebi/Projects/CLionProjects/pacman/main.c > CMakeFiles/pacman.dir/main.c.i
+CMakeFiles/pacman.dir/src/main.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/pacman.dir/src/main.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/mrtalebi/Projects/CLionProjects/pacman/src/main.c > CMakeFiles/pacman.dir/src/main.c.i
 
-CMakeFiles/pacman.dir/main.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/pacman.dir/main.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/mrtalebi/Projects/CLionProjects/pacman/main.c -o CMakeFiles/pacman.dir/main.c.s
+CMakeFiles/pacman.dir/src/main.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/pacman.dir/src/main.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/mrtalebi/Projects/CLionProjects/pacman/src/main.c -o CMakeFiles/pacman.dir/src/main.c.s
 
-CMakeFiles/pacman.dir/main.c.o.requires:
+CMakeFiles/pacman.dir/src/main.c.o.requires:
 
-.PHONY : CMakeFiles/pacman.dir/main.c.o.requires
+.PHONY : CMakeFiles/pacman.dir/src/main.c.o.requires
 
-CMakeFiles/pacman.dir/main.c.o.provides: CMakeFiles/pacman.dir/main.c.o.requires
-	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/main.c.o.provides.build
-.PHONY : CMakeFiles/pacman.dir/main.c.o.provides
+CMakeFiles/pacman.dir/src/main.c.o.provides: CMakeFiles/pacman.dir/src/main.c.o.requires
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/main.c.o.provides.build
+.PHONY : CMakeFiles/pacman.dir/src/main.c.o.provides
 
-CMakeFiles/pacman.dir/main.c.o.provides.build: CMakeFiles/pacman.dir/main.c.o
+CMakeFiles/pacman.dir/src/main.c.o.provides.build: CMakeFiles/pacman.dir/src/main.c.o
+
+
+CMakeFiles/pacman.dir/src/input.c.o: CMakeFiles/pacman.dir/flags.make
+CMakeFiles/pacman.dir/src/input.c.o: ../src/input.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mrtalebi/Projects/CLionProjects/pacman/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/pacman.dir/src/input.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/pacman.dir/src/input.c.o   -c /home/mrtalebi/Projects/CLionProjects/pacman/src/input.c
+
+CMakeFiles/pacman.dir/src/input.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/pacman.dir/src/input.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/mrtalebi/Projects/CLionProjects/pacman/src/input.c > CMakeFiles/pacman.dir/src/input.c.i
+
+CMakeFiles/pacman.dir/src/input.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/pacman.dir/src/input.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/mrtalebi/Projects/CLionProjects/pacman/src/input.c -o CMakeFiles/pacman.dir/src/input.c.s
+
+CMakeFiles/pacman.dir/src/input.c.o.requires:
+
+.PHONY : CMakeFiles/pacman.dir/src/input.c.o.requires
+
+CMakeFiles/pacman.dir/src/input.c.o.provides: CMakeFiles/pacman.dir/src/input.c.o.requires
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/input.c.o.provides.build
+.PHONY : CMakeFiles/pacman.dir/src/input.c.o.provides
+
+CMakeFiles/pacman.dir/src/input.c.o.provides.build: CMakeFiles/pacman.dir/src/input.c.o
+
+
+CMakeFiles/pacman.dir/src/view.c.o: CMakeFiles/pacman.dir/flags.make
+CMakeFiles/pacman.dir/src/view.c.o: ../src/view.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mrtalebi/Projects/CLionProjects/pacman/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/pacman.dir/src/view.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/pacman.dir/src/view.c.o   -c /home/mrtalebi/Projects/CLionProjects/pacman/src/view.c
+
+CMakeFiles/pacman.dir/src/view.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/pacman.dir/src/view.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/mrtalebi/Projects/CLionProjects/pacman/src/view.c > CMakeFiles/pacman.dir/src/view.c.i
+
+CMakeFiles/pacman.dir/src/view.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/pacman.dir/src/view.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/mrtalebi/Projects/CLionProjects/pacman/src/view.c -o CMakeFiles/pacman.dir/src/view.c.s
+
+CMakeFiles/pacman.dir/src/view.c.o.requires:
+
+.PHONY : CMakeFiles/pacman.dir/src/view.c.o.requires
+
+CMakeFiles/pacman.dir/src/view.c.o.provides: CMakeFiles/pacman.dir/src/view.c.o.requires
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/view.c.o.provides.build
+.PHONY : CMakeFiles/pacman.dir/src/view.c.o.provides
+
+CMakeFiles/pacman.dir/src/view.c.o.provides.build: CMakeFiles/pacman.dir/src/view.c.o
+
+
+CMakeFiles/pacman.dir/src/models.c.o: CMakeFiles/pacman.dir/flags.make
+CMakeFiles/pacman.dir/src/models.c.o: ../src/models.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mrtalebi/Projects/CLionProjects/pacman/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/pacman.dir/src/models.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/pacman.dir/src/models.c.o   -c /home/mrtalebi/Projects/CLionProjects/pacman/src/models.c
+
+CMakeFiles/pacman.dir/src/models.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/pacman.dir/src/models.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/mrtalebi/Projects/CLionProjects/pacman/src/models.c > CMakeFiles/pacman.dir/src/models.c.i
+
+CMakeFiles/pacman.dir/src/models.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/pacman.dir/src/models.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/mrtalebi/Projects/CLionProjects/pacman/src/models.c -o CMakeFiles/pacman.dir/src/models.c.s
+
+CMakeFiles/pacman.dir/src/models.c.o.requires:
+
+.PHONY : CMakeFiles/pacman.dir/src/models.c.o.requires
+
+CMakeFiles/pacman.dir/src/models.c.o.provides: CMakeFiles/pacman.dir/src/models.c.o.requires
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/models.c.o.provides.build
+.PHONY : CMakeFiles/pacman.dir/src/models.c.o.provides
+
+CMakeFiles/pacman.dir/src/models.c.o.provides.build: CMakeFiles/pacman.dir/src/models.c.o
+
+
+CMakeFiles/pacman.dir/src/controler.c.o: CMakeFiles/pacman.dir/flags.make
+CMakeFiles/pacman.dir/src/controler.c.o: ../src/controler.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mrtalebi/Projects/CLionProjects/pacman/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/pacman.dir/src/controler.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/pacman.dir/src/controler.c.o   -c /home/mrtalebi/Projects/CLionProjects/pacman/src/controler.c
+
+CMakeFiles/pacman.dir/src/controler.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/pacman.dir/src/controler.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/mrtalebi/Projects/CLionProjects/pacman/src/controler.c > CMakeFiles/pacman.dir/src/controler.c.i
+
+CMakeFiles/pacman.dir/src/controler.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/pacman.dir/src/controler.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/mrtalebi/Projects/CLionProjects/pacman/src/controler.c -o CMakeFiles/pacman.dir/src/controler.c.s
+
+CMakeFiles/pacman.dir/src/controler.c.o.requires:
+
+.PHONY : CMakeFiles/pacman.dir/src/controler.c.o.requires
+
+CMakeFiles/pacman.dir/src/controler.c.o.provides: CMakeFiles/pacman.dir/src/controler.c.o.requires
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/controler.c.o.provides.build
+.PHONY : CMakeFiles/pacman.dir/src/controler.c.o.provides
+
+CMakeFiles/pacman.dir/src/controler.c.o.provides.build: CMakeFiles/pacman.dir/src/controler.c.o
 
 
 # Object files for target pacman
 pacman_OBJECTS = \
-"CMakeFiles/pacman.dir/main.c.o"
+"CMakeFiles/pacman.dir/src/main.c.o" \
+"CMakeFiles/pacman.dir/src/input.c.o" \
+"CMakeFiles/pacman.dir/src/view.c.o" \
+"CMakeFiles/pacman.dir/src/models.c.o" \
+"CMakeFiles/pacman.dir/src/controler.c.o"
 
 # External object files for target pacman
 pacman_EXTERNAL_OBJECTS =
 
-pacman: CMakeFiles/pacman.dir/main.c.o
+pacman: CMakeFiles/pacman.dir/src/main.c.o
+pacman: CMakeFiles/pacman.dir/src/input.c.o
+pacman: CMakeFiles/pacman.dir/src/view.c.o
+pacman: CMakeFiles/pacman.dir/src/models.c.o
+pacman: CMakeFiles/pacman.dir/src/controler.c.o
 pacman: CMakeFiles/pacman.dir/build.make
 pacman: CMakeFiles/pacman.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mrtalebi/Projects/CLionProjects/pacman/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable pacman"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mrtalebi/Projects/CLionProjects/pacman/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable pacman"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/pacman.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -99,7 +203,11 @@ CMakeFiles/pacman.dir/build: pacman
 
 .PHONY : CMakeFiles/pacman.dir/build
 
-CMakeFiles/pacman.dir/requires: CMakeFiles/pacman.dir/main.c.o.requires
+CMakeFiles/pacman.dir/requires: CMakeFiles/pacman.dir/src/main.c.o.requires
+CMakeFiles/pacman.dir/requires: CMakeFiles/pacman.dir/src/input.c.o.requires
+CMakeFiles/pacman.dir/requires: CMakeFiles/pacman.dir/src/view.c.o.requires
+CMakeFiles/pacman.dir/requires: CMakeFiles/pacman.dir/src/models.c.o.requires
+CMakeFiles/pacman.dir/requires: CMakeFiles/pacman.dir/src/controler.c.o.requires
 
 .PHONY : CMakeFiles/pacman.dir/requires
 

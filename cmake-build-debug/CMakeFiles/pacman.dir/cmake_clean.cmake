@@ -1,5 +1,9 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/pacman.dir/main.c.o"
+  "CMakeFiles/pacman.dir/src/main.c.o"
+  "CMakeFiles/pacman.dir/src/input.c.o"
+  "CMakeFiles/pacman.dir/src/view.c.o"
+  "CMakeFiles/pacman.dir/src/models.c.o"
+  "CMakeFiles/pacman.dir/src/controler.c.o"
   "pacman.pdb"
   "pacman"
 )
