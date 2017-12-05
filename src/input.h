@@ -7,10 +7,10 @@
 
 int listener();
 
-void initialize(Game *);
+void initialize(Game*);
 
-void pacmanInit(Pacman *, FILE*);
+void pacmanInit(Pacman*, FILE*);
 
-void ghostInit(Ghost *, FILE*);
+void ghostInit(Ghost*, FILE*);
 
 #endif

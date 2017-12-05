@@ -200,6 +200,9 @@ ProcessorCount_cmd_sysctl:FILEPATH=/sbin/sysctl
 //Path to a library.
 SDL2IMAGE_LIBRARY:FILEPATH=SDL2IMAGE_LIBRARY-NOTFOUND
 
+//Dependencies for target
+SDL2LIBRARY_LIB_DEPENDS:STATIC=
+
 //The directory containing a CMake configuration file for SDL2.
 SDL2_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/SDL2
 
@@ -210,6 +213,9 @@ SDL2_IMAGE_DIR:PATH=SDL2_IMAGE_DIR-NOTFOUND
 SDL2_IMAGE_INCLUDE_DIR:PATH=SDL2_IMAGE_INCLUDE_DIR-NOTFOUND
 
 //Path to a library.
+SDL2_IMAGE_LIBRARY:FILEPATH=SDL2_IMAGE_LIBRARY-NOTFOUND
+
+//Path to a library.
 SDL2_IMAGE_LIBRARY_TEMP:FILEPATH=SDL2_IMAGE_LIBRARY_TEMP-NOTFOUND
 
 //Path to a file.
@@ -218,8 +224,17 @@ SDL2_INCLUDE_DIR:FILEPATH=SDL2_INCLUDE_DIR-NOTFOUND
 //Path to a library.
 SDL2_LIBRARY:FILEPATH=SDL2_LIBRARY-NOTFOUND
 
+//Dependencies for target
+SDL2_LIBRARY_LIB_DEPENDS:STATIC=
+
+//Dependencies for target
+SDL2_LIB_DEPENDS:STATIC=
+
 //The directory containing a CMake configuration file for SDL2_image.
 SDL2_image_DIR:PATH=SDL2_image_DIR-NOTFOUND
+
+//Path to a library.
+SDL2؛IMAGE_LIBRARY:FILEPATH=SDL2؛IMAGE_LIBRARY-NOTFOUND
 
 //Value Computed by CMake
 pacman_BINARY_DIR:STATIC=/home/mrtalebi/Projects/CLionProjects/pacman/cmake-build-debug
@@ -451,6 +466,7 @@ SDL2_sdl2_INCLUDEDIR:INTERNAL=
 SDL2_sdl2_LIBDIR:INTERNAL=
 SDL2_sdl2_PREFIX:INTERNAL=
 SDL2_sdl2_VERSION:INTERNAL=
+__pkg_config_checked_SDL:INTERNAL=1
 __pkg_config_checked_SDL2:INTERNAL=1
 __pkg_config_checked_SDL2IMAGE:INTERNAL=1
 prefix_result:INTERNAL=/usr/lib/x86_64-linux-gnu

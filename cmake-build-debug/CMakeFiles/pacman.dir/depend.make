@@ -4,24 +4,21 @@
 CMakeFiles/pacman.dir/src/controler.c.o: ../src/controler.c
 CMakeFiles/pacman.dir/src/controler.c.o: ../src/controler.h
 CMakeFiles/pacman.dir/src/controler.c.o: ../src/input.h
-CMakeFiles/pacman.dir/src/controler.c.o: ../src/models.c
 CMakeFiles/pacman.dir/src/controler.c.o: ../src/models.h
 
 CMakeFiles/pacman.dir/src/input.c.o: ../src/input.c
 CMakeFiles/pacman.dir/src/input.c.o: ../src/input.h
-CMakeFiles/pacman.dir/src/input.c.o: ../src/models.c
 CMakeFiles/pacman.dir/src/input.c.o: ../src/models.h
 
 CMakeFiles/pacman.dir/src/main.c.o: ../src/controler.h
 CMakeFiles/pacman.dir/src/main.c.o: ../src/input.h
 CMakeFiles/pacman.dir/src/main.c.o: ../src/main.c
-CMakeFiles/pacman.dir/src/main.c.o: ../src/models.c
 CMakeFiles/pacman.dir/src/main.c.o: ../src/models.h
 CMakeFiles/pacman.dir/src/main.c.o: ../src/view.h
 
 CMakeFiles/pacman.dir/src/models.c.o: ../src/models.c
+CMakeFiles/pacman.dir/src/models.c.o: ../src/models.h
 
-CMakeFiles/pacman.dir/src/view.c.o: ../src/models.c
 CMakeFiles/pacman.dir/src/view.c.o: ../src/models.h
 CMakeFiles/pacman.dir/src/view.c.o: ../src/view.c
 CMakeFiles/pacman.dir/src/view.c.o: ../src/view.h

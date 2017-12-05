@@ -1,17 +1,18 @@
-#ifndef CONTROLER_H
-#define CONTROLER_H
+#ifndef CONTROLLER_H
+#define CONTROLLER_H
 
 #include <stdbool.h>
 #include "models.h"
 
-
 int runACycle(Game *);
 
-int runAGhostACycle(Game *game, Ghost *ghost);
+int runAGhostACycle(Game *, Ghost *);
 
 void makeANewRoom(Game *);
 
-void moveACreature(Coordinates *, Stage *room);
+void moveACreature(Coordinates *, Stage *);
+
+void pacmanDirectionDecide(Coordinates *, Stage *, int);
 
 void pacmanBecomeAHero(Game *);
 

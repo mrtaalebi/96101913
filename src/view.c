@@ -1,9 +1,9 @@
-#include "SDL2/SDL.h"
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
 #include "view.h"
 
-const int SCREEN_WIDTH = 480, SCREEN_HEIGHT = 720;
+const int SCREEN_WIDTH = 23 * 30, SCREEN_HEIGHT = 19 * 30, TILE = 30;
 
 void logSDLError() {
     printf("SDL error:\n%s\n", SDL_GetError());
@@ -27,10 +27,10 @@ SDL_Renderer* initiateWindow() {
     return ren;
 }
 
+SDL_Texture *icon;
+
 void paintStage(Game* game, SDL_Renderer* ren) {
     SDL_RenderClear(ren);
-    const int TILE = 40;
-    SDL_Texture *icon = NULL;
     for (int i = 0; i < game->stage.n; ++i) {
         for (int j = 0; j < game->stage.m; ++j) {
             char c = game->stage.tiles[i][j];
@@ -47,7 +47,8 @@ void paintStage(Game* game, SDL_Renderer* ren) {
                     break;
                 default: break;
             }
-            renderTexture(icon, ren, i * TILE, j * TILE, TILE, TILE);
+            renderTexture(icon, ren, j * TILE, i * TILE, TILE, TILE);
+            SDL_DestroyTexture(icon);
         }
     }
     renderACharacter("res/icons/pacman_icon.png", icon, ren, &game->pacman.coordinates, TILE);
@@ -61,7 +62,7 @@ void paintStage(Game* game, SDL_Renderer* ren) {
 
 void renderACharacter(char *file, SDL_Texture *icon, SDL_Renderer *ren, Coordinates *coordinates, int TILE) {
     icon = loadTexture(file, ren);
-    renderTexture(icon, ren, coordinates->current.x * TILE, coordinates->current.y * TILE, TILE, TILE);
+    renderTexture(icon, ren, coordinates->current.y * TILE, coordinates->current.x * TILE, TILE, TILE);
 }
 
 void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y, int h, int w){
@@ -103,10 +104,10 @@ void gameReport(Game *game) {
                 default: s = "aoeu"; break;
             }
             if (s != "aoeu")
-                printf("%s", s);
-            else printf("%c", out[i][j]);
+                printf("%s ", s);
+            else printf("%c ", out[i][j]);
         }
         printf("\n");
     }
-    printf("\n2, 4, 6, 8\n");
+    printf("\n\n");
 }

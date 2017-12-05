@@ -1,22 +1,21 @@
-#include  <stdio.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <SDL2/SDL.h>
 
-#include "input.h"
 #include "view.h"
+#include "input.h"
 #include "controler.h"
 
 int main() {
-
     SDL_Renderer* panel = initiateWindow();
-
     Game game;
     initialize(&game);
     int condition;
     while (true) {
-        paintStage(&game, panel);
-        gameReport(&game);
-        condition = runACycle(&game);
-        if (condition == NEW_STAGE) {
+    paintStage(&game, panel);
+    gameReport(&game);
+    condition = runACycle(&game);
+    if (condition == NEW_STAGE) {
             gameReport(&game);
             printf("\nGreat! You made it! Going for next stage!\n");
             makeANewRoom(&game);

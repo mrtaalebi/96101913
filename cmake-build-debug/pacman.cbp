@@ -44,9 +44,9 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-D_REENTRANT"/>
 					<Add directory="/home/mrtalebi/Projects/CLionProjects/pacman/src"/>
-					<Add directory="/home/mrtalebi/Projects/CLionProjects/pacman/{SDL2_INCLUDE_DIRECTORY}"/>
-					<Add directory="/home/mrtalebi/Projects/CLionProjects/pacman/{SDL2IMAGE_INCLUDE_DIRECTORY}"/>
+					<Add directory="/usr/include/SDL2"/>
 					<Add directory="/usr/include/c++/7"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
 					<Add directory="/usr/include/c++/7/backward"/>
@@ -70,9 +70,9 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-D_REENTRANT"/>
 					<Add directory="/home/mrtalebi/Projects/CLionProjects/pacman/src"/>
-					<Add directory="/home/mrtalebi/Projects/CLionProjects/pacman/{SDL2_INCLUDE_DIRECTORY}"/>
-					<Add directory="/home/mrtalebi/Projects/CLionProjects/pacman/{SDL2IMAGE_INCLUDE_DIRECTORY}"/>
+					<Add directory="/usr/include/SDL2"/>
 					<Add directory="/usr/include/c++/7"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
 					<Add directory="/usr/include/c++/7/backward"/>

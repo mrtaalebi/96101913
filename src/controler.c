@@ -4,16 +4,19 @@
 #include "input.h"
 
 int runACycle(Game *game) {
-    int arrowKeyPressed = listener();
-    game->pacman.coordinates.direction = arrowKeyPressed;
     game->stage.cycles++;
+    int arrowKeyPressed = listener();
+    if (arrowKeyPressed != -1) {
+        pacmanDirectionDecide(&game->pacman.coordinates, &game->stage, arrowKeyPressed);
+    }
     moveACreature(&game->pacman.coordinates, &game->stage);
-    pacmanEat(game);
     checkPacmanAndGhostsCollision(game);
+    pacmanEat(game);
     runAGhostACycle(game, &game->blinky);
     runAGhostACycle(game, &game->pinky);
     runAGhostACycle(game, &game->clyde);
     runAGhostACycle(game, &game->inky);
+    checkPacmanAndGhostsCollision(game);
     int foodsLeft = checkRemainingFoods(&game->stage);
     if (foodsLeft == 0 && game->pacman.hearts > 0) {
         return NEW_STAGE;
@@ -24,20 +27,31 @@ int runACycle(Game *game) {
     }
 }
 
+void pacmanDirectionDecide(Coordinates *coordinates, Stage *stage, int newDirection) {
+    Coordinates newOne = *coordinates;
+    newOne.direction = newDirection;
+    moveACreature(&newOne, stage);
+    if (!areOnTheSamePosition(newOne.current, coordinates->current)) {
+        coordinates->direction = newDirection;
+    }
+}
+
 int runAGhostACycle(Game *game, Ghost *ghost) {
     if (ghost->defensiveSecondsLeft > 0) {
         ghost->defensiveSecondsLeft--;
+        Coordinates newOne = ghost->coordinates;
+        newOne.direction = rand() % 4 + 1;
+        moveACreature(&newOne, &game->stage);
+        for (int i = 0; i < 4; ++i) {
+            if (areOnTheSamePosition(newOne.current, ghost->coordinates.current)) {
+                newOne.direction = (newOne.direction + 1) % 4 + 1;
+                moveACreature(&newOne, &game->stage);
+            } else break;
+        }
+        ghost->coordinates = newOne;
+    } else {
+        ghost->defensiveSecondsLeft++;
     }
-    Coordinates newOne = ghost->coordinates;
-    newOne.direction = rand() % 4 + 1;
-    moveACreature(&newOne, &game->stage);
-    for (int i = 0; i < 4; ++i) {
-        if (areOnTheSamePosition(newOne.current, ghost->coordinates.current)) {
-            newOne.direction = (newOne.direction + 1) % 4 + 1;
-            moveACreature(&newOne, &game->stage);
-        } else break;
-    }
-    ghost->coordinates = newOne;
 }
 
 int checkRemainingFoods(Stage *room) {
@@ -52,23 +66,23 @@ int checkRemainingFoods(Stage *room) {
     return foodsLeft;
 }
 
-void moveACreature(Coordinates *p, Stage *room) {
+void moveACreature(Coordinates *p, Stage *stage) {
     Point newPoint = p->current;
     switch (p->direction) {
         case DIR_UP:
-            newPoint.x = getNextInCircular(newPoint.x - 1, room->n);
+            newPoint.x = getNextInCircular(newPoint.x - 1, stage->n);
             break;
         case DIR_RIGHT:
-            newPoint.y = getNextInCircular(newPoint.y + 1, room->m);
+            newPoint.y = getNextInCircular(newPoint.y + 1, stage->m);
             break;
         case DIR_DOWN:
-            newPoint.x = getNextInCircular(newPoint.x + 1, room->n);
+            newPoint.x = getNextInCircular(newPoint.x + 1, stage->n);
             break;
         case DIR_LEFT:
-            newPoint.y = getNextInCircular(newPoint.y - 1, room->m);
+            newPoint.y = getNextInCircular(newPoint.y - 1, stage->m);
             break;
     }
-    char nextStep = room->tiles[newPoint.x][newPoint.y];
+    char nextStep = stage->tiles[newPoint.x][newPoint.y];
     if (nextStep != BLOCK) {
         p->current = newPoint;
     }
@@ -155,7 +169,7 @@ int pacmanHitAGhost(Game *game, Ghost *ghost) {
         game->pacman.score.totalScore += GHOST_EAT_VALUE;
         ghost->coordinates.current = ghost->coordinates.start;
         ghost->defensiveSecondsLeft = -1 * DELAY_MADE_WHEN_PACMAN_KILLS_A_GHOST;
-        ghost->coordinates.speed = GHOST_AGGRESIVE_SPEED;
+        ghost->coordinates.speed = GHOST_AGGRESSIVE_SPEED;
         return -1;
     } else {
         restartRoomByPacmanDeath(game);
@@ -174,7 +188,7 @@ void restartRoomByPacmanDeath(Game *game) {
 }
 
 void restartAGhostByPacmanDeath(Ghost *ghost) {
-    ghost->coordinates.speed = GHOST_AGGRESIVE_SPEED;
+    ghost->coordinates.speed = GHOST_AGGRESSIVE_SPEED;
     ghost->coordinates.current = ghost->coordinates.start;
     ghost->defensiveSecondsLeft = 0;
 }

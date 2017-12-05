@@ -5,24 +5,21 @@ CMakeFiles/pacman.dir/src/controler.c.o
  /home/mrtalebi/Projects/CLionProjects/pacman/src/controler.c
  /home/mrtalebi/Projects/CLionProjects/pacman/src/controler.h
  /home/mrtalebi/Projects/CLionProjects/pacman/src/input.h
- /home/mrtalebi/Projects/CLionProjects/pacman/src/models.c
  /home/mrtalebi/Projects/CLionProjects/pacman/src/models.h
 CMakeFiles/pacman.dir/src/input.c.o
  /home/mrtalebi/Projects/CLionProjects/pacman/src/input.c
  /home/mrtalebi/Projects/CLionProjects/pacman/src/input.h
- /home/mrtalebi/Projects/CLionProjects/pacman/src/models.c
  /home/mrtalebi/Projects/CLionProjects/pacman/src/models.h
 CMakeFiles/pacman.dir/src/main.c.o
  /home/mrtalebi/Projects/CLionProjects/pacman/src/controler.h
  /home/mrtalebi/Projects/CLionProjects/pacman/src/input.h
  /home/mrtalebi/Projects/CLionProjects/pacman/src/main.c
- /home/mrtalebi/Projects/CLionProjects/pacman/src/models.c
  /home/mrtalebi/Projects/CLionProjects/pacman/src/models.h
  /home/mrtalebi/Projects/CLionProjects/pacman/src/view.h
 CMakeFiles/pacman.dir/src/models.c.o
  /home/mrtalebi/Projects/CLionProjects/pacman/src/models.c
+ /home/mrtalebi/Projects/CLionProjects/pacman/src/models.h
 CMakeFiles/pacman.dir/src/view.c.o
- /home/mrtalebi/Projects/CLionProjects/pacman/src/models.c
  /home/mrtalebi/Projects/CLionProjects/pacman/src/models.h
  /home/mrtalebi/Projects/CLionProjects/pacman/src/view.c
  /home/mrtalebi/Projects/CLionProjects/pacman/src/view.h

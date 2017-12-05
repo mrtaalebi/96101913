@@ -4,7 +4,7 @@
 # compile C with /usr/bin/cc
 C_FLAGS = -g   -std=gnu99
 
-C_DEFINES = 
+C_DEFINES = -D_REENTRANT
 
-C_INCLUDES = -I/home/mrtalebi/Projects/CLionProjects/pacman/src -I/home/mrtalebi/Projects/CLionProjects/pacman/{SDL2_INCLUDE_DIRECTORY} -I/home/mrtalebi/Projects/CLionProjects/pacman/{SDL2IMAGE_INCLUDE_DIRECTORY} 
+C_INCLUDES = -I/home/mrtalebi/Projects/CLionProjects/pacman/src -I/usr/include/SDL2 
 
