@@ -5,6 +5,7 @@ CMakeFiles/pacman.dir/src/controler.c.o: ../src/controler.c
 CMakeFiles/pacman.dir/src/controler.c.o: ../src/controler.h
 CMakeFiles/pacman.dir/src/controler.c.o: ../src/input.h
 CMakeFiles/pacman.dir/src/controler.c.o: ../src/models.h
+CMakeFiles/pacman.dir/src/controler.c.o: ../src/view.h
 
 CMakeFiles/pacman.dir/src/input.c.o: ../src/input.c
 CMakeFiles/pacman.dir/src/input.c.o: ../src/input.h

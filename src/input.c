@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 
 #include "input.h"
+#include "models.h"
 
 int listener() {
     int direction = -1;
@@ -44,10 +45,10 @@ void initialize(Game *game) {
     }
     game->stage.roomNumber = 1;
     pacmanInit(&game->pacman, map_txt);
-    ghostInit(&game->blinky, map_txt);
-    ghostInit(&game->pinky, map_txt);
-    ghostInit(&game->clyde, map_txt);
-    ghostInit(&game->inky, map_txt);
+    ghostInit(&game->blinky, map_txt, CHARACTER_BLINKY);
+    ghostInit(&game->pinky, map_txt, CHARACTER_PINKY);
+    ghostInit(&game->clyde, map_txt, CHARACTER_CLYDE);
+    ghostInit(&game->inky, map_txt, CHARACTER_INKY);
     fclose(map_txt);
 }
 
@@ -58,15 +59,19 @@ void pacmanInit(Pacman *pacman, FILE *map_txt) {
     pacman->hearts = 3;
     pacman->coordinates.current.x = pacman->coordinates.start.x;
     pacman->coordinates.current.y = pacman->coordinates.start.y;
+    pacman->coordinates.direction = DIR_NONE;
     pacman->coordinates.speed = PACMAN_NORMAL_SPEED;
+    pacman->coordinates.characterType = CHARACTER_PACMAN;
 }
 
-void ghostInit(Ghost *ghost, FILE *map_txt) {
+void ghostInit(Ghost *ghost, FILE *map_txt, int ghostType) {
     fscanf(map_txt, "%d %d",
            &ghost->coordinates.start.x,
            &ghost->coordinates.start.y);
     ghost->coordinates.current.x = ghost->coordinates.start.x;
     ghost->coordinates.current.y = ghost->coordinates.start.y;
-    ghost->defensiveSecondsLeft = 0;
+    ghost->defensiveCyclesLeft = 0;
+    ghost->coordinates.direction = DIR_NONE;
     ghost->coordinates.speed = GHOST_AGGRESSIVE_SPEED;
+    ghost->coordinates.characterType = ghostType;
 }

@@ -13,6 +13,8 @@ controler.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/controler.h
 input.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/input.h
+view.h
+/home/mrtalebi/Projects/CLionProjects/pacman/src/view.h
 models.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/models.h
 
@@ -29,6 +31,8 @@ SDL2/SDL.h
 -
 input.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/input.h
+models.h
+/home/mrtalebi/Projects/CLionProjects/pacman/src/models.h
 
 /home/mrtalebi/Projects/CLionProjects/pacman/src/input.h
 stdio.h
@@ -40,8 +44,6 @@ models.h
 stdbool.h
 -
 stdio.h
--
-SDL2/SDL.h
 -
 view.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/view.h
@@ -63,8 +65,12 @@ SDL2/SDL_image.h
 -
 view.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/view.h
+models.h
+/home/mrtalebi/Projects/CLionProjects/pacman/src/models.h
 
 /home/mrtalebi/Projects/CLionProjects/pacman/src/view.h
+SDL2/SDL.h
+-
 models.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/models.h
 

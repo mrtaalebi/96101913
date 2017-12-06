@@ -28,7 +28,7 @@ void ghostBecomeDefensive(Ghost *);
 
 void restartRoomByPacmanDeath(Game *);
 
-void restartAGhostByPacmanDeath(Ghost *);
+void restartAGhostByPacmanDeath(Ghost *, Stage*);
 
 int getNextInCircular(int, int);
 

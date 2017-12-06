@@ -11,6 +11,6 @@ void initialize(Game*);
 
 void pacmanInit(Pacman*, FILE*);
 
-void ghostInit(Ghost*, FILE*);
+void ghostInit(Ghost*, FILE*, int characterType);
 
 #endif

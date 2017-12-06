@@ -2,6 +2,8 @@
 
 #include "controler.h"
 #include "input.h"
+#include "view.h"
+#include "models.h"
 
 int runACycle(Game *game) {
     game->stage.cycles++;
@@ -37,8 +39,8 @@ void pacmanDirectionDecide(Coordinates *coordinates, Stage *stage, int newDirect
 }
 
 int runAGhostACycle(Game *game, Ghost *ghost) {
-    if (ghost->defensiveSecondsLeft > 0) {
-        ghost->defensiveSecondsLeft--;
+    if (ghost->defensiveCyclesLeft > 0) {
+        ghost->defensiveCyclesLeft--;
         Coordinates newOne = ghost->coordinates;
         newOne.direction = rand() % 4 + 1;
         moveACreature(&newOne, &game->stage);
@@ -50,7 +52,7 @@ int runAGhostACycle(Game *game, Ghost *ghost) {
         }
         ghost->coordinates = newOne;
     } else {
-        ghost->defensiveSecondsLeft++;
+        ghost->defensiveCyclesLeft++;
     }
 }
 
@@ -84,6 +86,7 @@ void moveACreature(Coordinates *p, Stage *stage) {
     }
     char nextStep = stage->tiles[newPoint.x][newPoint.y];
     if (nextStep != BLOCK) {
+        paintCharacterWhenMoved(*p, &newPoint, stage);
         p->current = newPoint;
     }
 }
@@ -126,33 +129,33 @@ void pacmanBecomeAHero(Game *game) {
 
 void ghostBecomeDefensive(Ghost * ghost) {
     ghost->coordinates.speed = GHOST_DEFENSIVE_SPEED;
-    ghost->defensiveSecondsLeft = GHOST_MAX_DEFENSIVE_TIME;
+    ghost->defensiveCyclesLeft = GHOST_MAX_DEFENSIVE_TIME_SECONDS * CYCLES_PER_SECOND;
 }
 
 void checkPacmanAndGhostsCollision(Game *game) {
-    if (areOnTheSamePosition(game->pacman.coordinates.current, game->blinky.coordinates.current) && !game->blinky.defensiveSecondsLeft) {
+    if (areOnTheSamePosition(game->pacman.coordinates.current, game->blinky.coordinates.current) && !game->blinky.defensiveCyclesLeft) {
         pacmanHitAGhost(game, &game->blinky);
     }
-    if (areOnTheSamePosition(game->pacman.coordinates.current, game->pinky.coordinates.current) && !game->pinky.defensiveSecondsLeft) {
+    if (areOnTheSamePosition(game->pacman.coordinates.current, game->pinky.coordinates.current) && !game->pinky.defensiveCyclesLeft) {
         pacmanHitAGhost(game, &game->pinky);
     }
-    if (areOnTheSamePosition(game->pacman.coordinates.current, game->clyde.coordinates.current) && !game->clyde.defensiveSecondsLeft) {
+    if (areOnTheSamePosition(game->pacman.coordinates.current, game->clyde.coordinates.current) && !game->clyde.defensiveCyclesLeft) {
         pacmanHitAGhost(game, &game->clyde);
     }
-    if (areOnTheSamePosition(game->pacman.coordinates.current, game->inky.coordinates.current) && !game->inky.defensiveSecondsLeft) {
+    if (areOnTheSamePosition(game->pacman.coordinates.current, game->inky.coordinates.current) && !game->inky.defensiveCyclesLeft) {
         pacmanHitAGhost(game, &game->inky);
     }
 
-    if (areOnTheSamePosition(game->pacman.coordinates.current, game->blinky.coordinates.current) && game->blinky.defensiveSecondsLeft) {
+    if (areOnTheSamePosition(game->pacman.coordinates.current, game->blinky.coordinates.current) && game->blinky.defensiveCyclesLeft) {
         pacmanHitAGhost(game, &game->blinky);
     }
-    if (areOnTheSamePosition(game->pacman.coordinates.current, game->pinky.coordinates.current) && game->pinky.defensiveSecondsLeft) {
+    if (areOnTheSamePosition(game->pacman.coordinates.current, game->pinky.coordinates.current) && game->pinky.defensiveCyclesLeft) {
         pacmanHitAGhost(game, &game->pinky);
     }
-    if (areOnTheSamePosition(game->pacman.coordinates.current, game->clyde.coordinates.current) && game->clyde.defensiveSecondsLeft) {
+    if (areOnTheSamePosition(game->pacman.coordinates.current, game->clyde.coordinates.current) && game->clyde.defensiveCyclesLeft) {
         pacmanHitAGhost(game, &game->clyde);
     }
-    if (areOnTheSamePosition(game->pacman.coordinates.current, game->inky.coordinates.current) && game->inky.defensiveSecondsLeft) {
+    if (areOnTheSamePosition(game->pacman.coordinates.current, game->inky.coordinates.current) && game->inky.defensiveCyclesLeft) {
         pacmanHitAGhost(game, &game->inky);
     }
 }
@@ -164,11 +167,12 @@ bool areOnTheSamePosition(Point p1, Point p2) {
 /// returns +10: aggressive ghost
 /// returns -1: defensive ghost
 int pacmanHitAGhost(Game *game, Ghost *ghost) {
-    if (ghost->defensiveSecondsLeft) {
+    if (ghost->defensiveCyclesLeft) {
         game->pacman.score.ghostsKilled++;
         game->pacman.score.totalScore += GHOST_EAT_VALUE;
+        cleanACorpse(&ghost->coordinates, &game->stage);
         ghost->coordinates.current = ghost->coordinates.start;
-        ghost->defensiveSecondsLeft = -1 * DELAY_MADE_WHEN_PACMAN_KILLS_A_GHOST;
+        ghost->defensiveCyclesLeft = -1 * DELAY_MADE_WHEN_PACMAN_KILLS_A_GHOST * CYCLES_PER_SECOND;
         ghost->coordinates.speed = GHOST_AGGRESSIVE_SPEED;
         return -1;
     } else {
@@ -179,22 +183,28 @@ int pacmanHitAGhost(Game *game, Ghost *ghost) {
 
 void restartRoomByPacmanDeath(Game *game) {
     game->pacman.hearts--;
+    cleanACorpse(&game->pacman.coordinates, &game->stage);
     game->pacman.coordinates.current = game->pacman.coordinates.start;
+    game->pacman.coordinates.direction = DIR_NONE;
     game->pacman.coordinates.speed = PACMAN_NORMAL_SPEED;
-    restartAGhostByPacmanDeath(&game->blinky);
-    restartAGhostByPacmanDeath(&game->pinky);
-    restartAGhostByPacmanDeath(&game->clyde);
-    restartAGhostByPacmanDeath(&game->inky);
+    restartAGhostByPacmanDeath(&game->blinky, &game->stage);
+    restartAGhostByPacmanDeath(&game->pinky, &game->stage);
+    restartAGhostByPacmanDeath(&game->clyde, &game->stage);
+    restartAGhostByPacmanDeath(&game->inky, &game->stage);
 }
 
-void restartAGhostByPacmanDeath(Ghost *ghost) {
+void restartAGhostByPacmanDeath(Ghost *ghost, Stage* stage) {
     ghost->coordinates.speed = GHOST_AGGRESSIVE_SPEED;
+    cleanACorpse(&ghost->coordinates, stage);
+    ghost->coordinates.direction = DIR_NONE;
     ghost->coordinates.current = ghost->coordinates.start;
-    ghost->defensiveSecondsLeft = 0;
+    ghost->defensiveCyclesLeft = 0;
 }
 
 void makeANewRoom(Game *game) {
     int roomNumber = game->stage.roomNumber;
+    int pacmanHearts = game->pacman.hearts;
     initialize(game);
+    game->pacman.hearts = pacmanHearts;
     game->stage.roomNumber = roomNumber + 1;
 }

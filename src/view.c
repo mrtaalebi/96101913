@@ -2,14 +2,15 @@
 #include <SDL2/SDL_image.h>
 
 #include "view.h"
+#include "models.h"
 
-const int SCREEN_WIDTH = 23 * 30, SCREEN_HEIGHT = 19 * 30, TILE = 30;
+SDL_Renderer* ren;
 
 void logSDLError() {
     printf("SDL error:\n%s\n", SDL_GetError());
 }
 
-SDL_Renderer* initiateWindow() {
+void initiateWindow() {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         logSDLError();
     }
@@ -18,54 +19,82 @@ SDL_Renderer* initiateWindow() {
         logSDLError();
         SDL_Quit();
     }
-    SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (ren == NULL) {
         SDL_DestroyWindow(win);
         logSDLError();
         SDL_Quit();
     }
-    return ren;
 }
 
-SDL_Texture *icon;
-
-void paintStage(Game* game, SDL_Renderer* ren) {
+void paintStage(Game* game) {
+    SDL_Texture* icon = NULL;
     SDL_RenderClear(ren);
     for (int i = 0; i < game->stage.n; ++i) {
         for (int j = 0; j < game->stage.m; ++j) {
-            char c = game->stage.tiles[i][j];
-            switch (c) {
-                case CHEESE: icon = loadTexture("res/icons/cheese_icon.png", ren);
-                    break;
-                case CHERRY: icon = loadTexture("res/icons/cherry_icon.png", ren);
-                    break;
-                case PINEAPPLE: icon = loadTexture("res/icons/pineapple_icon.png", ren);
-                    break;
-                case EMPTY: icon = loadTexture("res/icons/empty_icon.png", ren);
-                    break;
-                case BLOCK: icon = loadTexture("res/icons/block_icon.png", ren);
-                    break;
-                default: break;
-            }
-            renderTexture(icon, ren, j * TILE, i * TILE, TILE, TILE);
-            SDL_DestroyTexture(icon);
+            paintBackgrounds(i, j, game->stage.tiles[i][j]);
         }
     }
-    renderACharacter("res/icons/pacman_icon.png", icon, ren, &game->pacman.coordinates, TILE);
-    renderACharacter("res/icons/blinky_icon.png", icon, ren, &game->blinky.coordinates, TILE);
-    renderACharacter("res/icons/pinky_icon.png", icon, ren, &game->pinky.coordinates, TILE);
-    renderACharacter("res/icons/clyde_icon.png", icon, ren, &game->clyde.coordinates, TILE);
-    renderACharacter("res/icons/inky_icon.png", icon, ren, &game->inky.coordinates, TILE);
+    renderACharacter(&game->pacman.coordinates);
+    renderACharacter(&game->blinky.coordinates);
+    renderACharacter(&game->pinky.coordinates);
+    renderACharacter(&game->clyde.coordinates);
+    renderACharacter(&game->inky.coordinates);
 
     SDL_RenderPresent(ren);
 }
 
-void renderACharacter(char *file, SDL_Texture *icon, SDL_Renderer *ren, Coordinates *coordinates, int TILE) {
-    icon = loadTexture(file, ren);
-    renderTexture(icon, ren, coordinates->current.y * TILE, coordinates->current.x * TILE, TILE, TILE);
+void paintCharacterWhenMoved(Coordinates lastOn, Point* movedTo, Stage* stage) {
+    paintBackgrounds(lastOn.current.x, lastOn.current.y, stage->tiles[lastOn.current.x][lastOn.current.y]);
+    lastOn.current.x = movedTo->x;
+    lastOn.current.y = movedTo->y;
+    renderACharacter(&lastOn);
+    SDL_RenderPresent(ren);
 }
 
-void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y, int h, int w){
+void paintBackgrounds(int x, int y, char tile) {
+    SDL_Texture* icon = NULL;
+    switch (tile) {
+        case CHEESE: icon = loadTexture("res/icons/cheese_icon.png");
+            break;
+        case CHERRY: icon = loadTexture("res/icons/cherry_icon.png");
+            break;
+        case PINEAPPLE: icon = loadTexture("res/icons/pineapple_icon.png");
+            break;
+        case EMPTY: icon = loadTexture("res/icons/empty_icon.png");
+            break;
+        case BLOCK: icon = loadTexture("res/icons/block_icon.png");
+            break;
+        default: break;
+    }
+    renderTexture(icon, y * TILE, x * TILE, TILE, TILE);
+    SDL_DestroyTexture(icon);
+}
+
+void cleanACorpse(Coordinates *coordinates, Stage *stage) {
+    paintBackgrounds(coordinates->current.x, coordinates->current.y, stage->tiles[coordinates->current.x][coordinates->current.y]);
+    SDL_RenderPresent(ren);
+}
+
+void renderACharacter(Coordinates *coordinates) {
+    SDL_Texture* icon = NULL;
+    switch (coordinates->characterType) {
+        case CHARACTER_PACMAN: icon = loadTexture("res/icons/pacman_icon.png");
+            break;
+        case CHARACTER_BLINKY: icon = loadTexture("res/icons/blinky_icon.png");
+            break;
+        case CHARACTER_PINKY: icon = loadTexture("res/icons/pinky_icon.png");
+            break;
+        case CHARACTER_CLYDE: icon = loadTexture("res/icons/clyde_icon.png");
+            break;
+        case CHARACTER_INKY: icon = loadTexture("res/icons/inky_icon.png");
+            break;
+    }
+    renderTexture(icon, coordinates->current.y * TILE, coordinates->current.x * TILE, TILE, TILE);
+    SDL_DestroyTexture(icon);
+}
+
+void renderTexture(SDL_Texture *tex, int x, int y, int h, int w){
     SDL_Rect dst;
     dst.x = x;
     dst.y = y;
@@ -74,7 +103,7 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y, int h, int
     SDL_RenderCopy(ren, tex, NULL, &dst);
 }
 
-SDL_Texture* loadTexture(const char* file, SDL_Renderer *ren) {
+SDL_Texture* loadTexture(const char* file) {
     SDL_Texture *texture = IMG_LoadTexture(ren, file);
     if (texture == NULL) {
         logSDLError();

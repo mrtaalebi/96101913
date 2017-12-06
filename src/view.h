@@ -1,17 +1,25 @@
 #ifndef VIEW_H
 #define VIEW_H
 
+#include <SDL2/SDL.h>
+
 #include "models.h"
 
-SDL_Renderer* initiateWindow();
+void initiateWindow();
 
-void renderTexture(SDL_Texture*, SDL_Renderer*, int, int, int, int);
+void renderTexture(SDL_Texture*, int, int, int, int);
 
-SDL_Texture* loadTexture(const char*, SDL_Renderer*);
+SDL_Texture* loadTexture(const char*);
 
-void paintStage(Game*, SDL_Renderer*);
+void paintStage(Game*);
 
-void renderACharacter(char*, SDL_Texture*, SDL_Renderer*, Coordinates*, int);
+void renderACharacter(Coordinates*);
+
+void paintBackgrounds(int, int, char);
+
+void paintCharacterWhenMoved(Coordinates, Point*, Stage*);
+
+void cleanACorpse(Coordinates *, Stage *);
 
 void gameReport(Game*);
 

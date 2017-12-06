@@ -1,23 +1,29 @@
 #ifndef MODELS_H
 #define MODELS_H
 
-extern const int CYCLES_PER_SECOND, DELAY_MADE_WHEN_PACMAN_KILLS_A_GHOST, GHOST_MAX_DEFENSIVE_TIME;
+const int SCREEN_WIDTH, SCREEN_HEIGHT, TILE;
 
-extern const enum Icons {
+const int CYCLES_PER_SECOND, DELAY_MADE_WHEN_PACMAN_KILLS_A_GHOST, GHOST_MAX_DEFENSIVE_TIME_SECONDS;
+
+const enum Icons {
     EMPTY = '_', BLOCK = '#', CHEESE = '.', CHERRY = '^', PINEAPPLE = 'O',
 };
 
-extern const enum gameConditions {
+const enum gameConditions {
     CONTINUE = 1, NEW_STAGE = 2, GAME_OVER = 3,
 };
 
-extern const double PACMAN_NORMAL_SPEED, GHOST_AGGRESSIVE_SPEED, GHOST_DEFENSIVE_SPEED;
+const double PACMAN_NORMAL_SPEED, GHOST_AGGRESSIVE_SPEED, GHOST_DEFENSIVE_SPEED;
 
-extern const int CHEESE_VALUE, CHERRY_VALUE, GHOST_EAT_VALUE;
+const int CHEESE_VALUE, CHERRY_VALUE, GHOST_EAT_VALUE;
 
 enum {
-    DIR_UP = 1, DIR_RIGHT = 2, DIR_DOWN = 3, DIR_LEFT = 4,
+    DIR_UP = 1, DIR_RIGHT = 2, DIR_DOWN = 3, DIR_LEFT = 4, DIR_NONE = -1,
 } typedef Direction;
+
+enum {
+    CHARACTER_PACMAN, CHARACTER_BLINKY, CHARACTER_PINKY, CHARACTER_CLYDE, CHARACTER_INKY,
+} typedef CharacterType;
 
 struct {
     int cheeseCount;
@@ -37,6 +43,7 @@ struct {
     Point current;
     Direction direction;
     double speed;
+    CharacterType characterType;
 } typedef Coordinates;
 
 struct {
@@ -47,7 +54,7 @@ struct {
 
 struct {
     Coordinates coordinates;
-    int defensiveSecondsLeft;
+    int defensiveCyclesLeft;
 } typedef Ghost;
 
 struct {
