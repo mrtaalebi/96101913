@@ -15,7 +15,7 @@ int main() {
     int millisPerCycle = (int) (1000.0 / CYCLES_PER_SECOND);
     while (true) {
         int startCycleTime = SDL_GetTicks();
-        gameReport(&game);
+        //gameReport(&game);
         condition = runACycle(&game);
         if (condition == NEW_STAGE) {
             gameReport(&game);

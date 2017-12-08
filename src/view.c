@@ -28,7 +28,6 @@ void initiateWindow() {
 }
 
 void paintStage(Game* game) {
-    SDL_Texture* icon = NULL;
     SDL_RenderClear(ren);
     for (int i = 0; i < game->stage.n; ++i) {
         for (int j = 0; j < game->stage.m; ++j) {
@@ -44,15 +43,16 @@ void paintStage(Game* game) {
     SDL_RenderPresent(ren);
 }
 
-void paintCharacterWhenMoved(Coordinates lastOn, Point* movedTo, Stage* stage) {
-    paintBackgrounds(lastOn.current.x, lastOn.current.y, stage->tiles[lastOn.current.x][lastOn.current.y]);
-    lastOn.current.x = movedTo->x;
-    lastOn.current.y = movedTo->y;
-    renderACharacter(&lastOn);
+void paintCharacter(Coordinates *lastOn, Point *movedTo, Stage *stage) {
+    //todo: fuck this shit
+    cleanACorpse(lastOn);
+    lastOn->currentPosition.x = movedTo->x;
+    lastOn->currentPosition.y = movedTo->y;
+    renderACharacter(lastOn);
     SDL_RenderPresent(ren);
 }
 
-void paintBackgrounds(int x, int y, char tile) {
+void paintBackgrounds(double x, double y, char tile) {
     SDL_Texture* icon = NULL;
     switch (tile) {
         case CHEESE: icon = loadTexture("res/icons/cheese_icon.png");
@@ -67,12 +67,12 @@ void paintBackgrounds(int x, int y, char tile) {
             break;
         default: break;
     }
-    renderTexture(icon, y * TILE, x * TILE, TILE, TILE);
+    renderTexture(icon, (int) y * TILE, (int) x * TILE, TILE, TILE);
     SDL_DestroyTexture(icon);
 }
 
-void cleanACorpse(Coordinates *coordinates, Stage *stage) {
-    paintBackgrounds(coordinates->current.x, coordinates->current.y, stage->tiles[coordinates->current.x][coordinates->current.y]);
+void cleanACorpse(Coordinates *coordinates) {
+    SDL_DestroyTexture(coordinates->texture);
     SDL_RenderPresent(ren);
 }
 
@@ -90,8 +90,8 @@ void renderACharacter(Coordinates *coordinates) {
         case CHARACTER_INKY: icon = loadTexture("res/icons/inky_icon.png");
             break;
     }
-    renderTexture(icon, coordinates->current.y * TILE, coordinates->current.x * TILE, TILE, TILE);
-    SDL_DestroyTexture(icon);
+    renderTexture(icon, coordinates->currentPosition.y, coordinates->currentPosition.x, TILE, TILE);
+    coordinates->texture = icon;
 }
 
 void renderTexture(SDL_Texture *tex, int x, int y, int h, int w){
@@ -116,11 +116,11 @@ void gameReport(Game *game) {
     for (int i = 0; i < game->stage.n; ++i)
         for (int j = 0; j < game->stage.m; ++j)
             out[i][j] = game->stage.tiles[i][j];
-    out[game->pacman.coordinates.current.x][game->pacman.coordinates.current.y] = 'C';
-    out[game->blinky.coordinates.current.x][game->blinky.coordinates.current.y] = 'B';
-    out[game->pinky.coordinates.current.x][game->pinky.coordinates.current.y] = 'P';
-    out[game->clyde.coordinates.current.x][game->clyde.coordinates.current.y] = 'L';
-    out[game->inky.coordinates.current.x][game->inky.coordinates.current.y] = 'I';
+    out[game->pacman.coordinates.currentPosition.x / TILE][game->pacman.coordinates.currentPosition.y / TILE] = 'C';
+    out[game->blinky.coordinates.currentPosition.x / TILE][game->blinky.coordinates.currentPosition.y / TILE] = 'B';
+    out[game->pinky.coordinates.currentPosition.x / TILE][game->pinky.coordinates.currentPosition.y / TILE] = 'P';
+    out[game->clyde.coordinates.currentPosition.x / TILE][game->clyde.coordinates.currentPosition.y / TILE] = 'L';
+    out[game->inky.coordinates.currentPosition.x / TILE][game->inky.coordinates.currentPosition.y / TILE] = 'I';
     for (int i = 0; i < game->stage.n; ++i) {
         for (int j = 0; j < game->stage.m; ++j) {
             char *s = NULL;

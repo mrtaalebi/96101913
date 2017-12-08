@@ -13,4 +13,6 @@ void pacmanInit(Pacman*, FILE*);
 
 void ghostInit(Ghost*, FILE*, int characterType);
 
+void characterCoordinatesToPixels(Coordinates *);
+
 #endif

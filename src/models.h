@@ -1,6 +1,8 @@
 #ifndef MODELS_H
 #define MODELS_H
 
+#include <SDL_render.h>
+
 const int SCREEN_WIDTH, SCREEN_HEIGHT, TILE;
 
 const int CYCLES_PER_SECOND, DELAY_MADE_WHEN_PACMAN_KILLS_A_GHOST, GHOST_MAX_DEFENSIVE_TIME_SECONDS;
@@ -13,7 +15,7 @@ const enum gameConditions {
     CONTINUE = 1, NEW_STAGE = 2, GAME_OVER = 3,
 };
 
-const double PACMAN_NORMAL_SPEED, GHOST_AGGRESSIVE_SPEED, GHOST_DEFENSIVE_SPEED;
+const int PACMAN_NORMAL_SPEED, GHOST_AGGRESSIVE_SPEED, GHOST_DEFENSIVE_SPEED;
 
 const int CHEESE_VALUE, CHERRY_VALUE, GHOST_EAT_VALUE;
 
@@ -39,37 +41,40 @@ struct {
 } typedef Point;
 
 struct {
-    Point start;
-    Point current;
-    Direction direction;
-    double speed;
+    int speed;
     CharacterType characterType;
+    Point startPosition;
+    Point currentPosition;
+    Direction direction;
+    Direction nextDirection;
+    SDL_Texture* texture;
 } typedef Coordinates;
 
 struct {
-    Coordinates coordinates;
-    Score score;
     int hearts;
+    Score score;
+    Coordinates coordinates;
 } typedef Pacman;
 
 struct {
-    Coordinates coordinates;
     int defensiveCyclesLeft;
+    Coordinates coordinates;
 } typedef Ghost;
 
 struct {
-    char tiles[100][100];
     int n, m;
     int cycles;
     int roomNumber;
+    char tiles[50][50];
+    char background[2500][2500];
 } typedef Stage;
 
 struct {
-    Pacman pacman;
     Ghost blinky;
     Ghost pinky;
     Ghost clyde;
     Ghost inky;
+    Pacman pacman;
     Stage stage;
 } typedef Game;
 

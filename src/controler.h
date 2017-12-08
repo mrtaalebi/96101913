@@ -10,9 +10,11 @@ int runAGhostACycle(Game *, Ghost *);
 
 void makeANewRoom(Game *);
 
-void moveACreature(Coordinates *, Stage *);
+void moveACharacter(Coordinates *, Stage *);
 
-void pacmanDirectionDecide(Coordinates *, Stage *, int);
+void reallyChangeDirection(Coordinates *, Stage *);
+
+void decideNextDirection(Coordinates *, Stage *, int);
 
 void pacmanBecomeAHero(Game *);
 
@@ -20,7 +22,9 @@ int pacmanHitAGhost(Game *, Ghost *);
 
 void checkPacmanAndGhostsCollision(Game *);
 
-bool areOnTheSamePosition(Point, Point);
+bool areNearEnoughToStrike(Point, Point, Game*);
+
+bool areOnTheSameExactPosition(Point, Point);
 
 int checkRemainingFoods(Stage *);
 
@@ -33,5 +37,7 @@ void restartAGhostByPacmanDeath(Ghost *, Stage*);
 int getNextInCircular(int, int);
 
 void pacmanEat(Game *);
+
+void emptySomeBackgroundCells(int, int, Stage*);
 
 #endif

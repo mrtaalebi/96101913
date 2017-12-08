@@ -5,7 +5,7 @@
 #include "models.h"
 
 int listener() {
-    int direction = -1;
+    int direction = DIR_NONE;
     SDL_Event event;
     while (SDL_PollEvent(&event));
         SDL_Keycode key = event.key.keysym.sym;
@@ -43,6 +43,11 @@ void initialize(Game *game) {
         }
         fscanf(map_txt, "\n");
     }
+    for (int i = 0; i < game->stage.n * TILE; ++i) {
+        for (int j = 0; j < game->stage.m * TILE; ++j) {
+            game->stage.background[i][j] = game->stage.tiles[i / TILE][j / TILE];
+        }
+    }
     game->stage.roomNumber = 1;
     pacmanInit(&game->pacman, map_txt);
     ghostInit(&game->blinky, map_txt, CHARACTER_BLINKY);
@@ -54,24 +59,33 @@ void initialize(Game *game) {
 
 void pacmanInit(Pacman *pacman, FILE *map_txt) {
     fscanf(map_txt, "%d %d",
-           &pacman->coordinates.start.x,
-           &pacman->coordinates.start.y);
+           &pacman->coordinates.startPosition.x,
+           &pacman->coordinates.startPosition.y);
     pacman->hearts = 3;
-    pacman->coordinates.current.x = pacman->coordinates.start.x;
-    pacman->coordinates.current.y = pacman->coordinates.start.y;
+    pacman->coordinates.currentPosition.x = pacman->coordinates.startPosition.x;
+    pacman->coordinates.currentPosition.y = pacman->coordinates.startPosition.y;
     pacman->coordinates.direction = DIR_NONE;
     pacman->coordinates.speed = PACMAN_NORMAL_SPEED;
     pacman->coordinates.characterType = CHARACTER_PACMAN;
+    characterCoordinatesToPixels(&pacman->coordinates);
 }
 
 void ghostInit(Ghost *ghost, FILE *map_txt, int ghostType) {
     fscanf(map_txt, "%d %d",
-           &ghost->coordinates.start.x,
-           &ghost->coordinates.start.y);
-    ghost->coordinates.current.x = ghost->coordinates.start.x;
-    ghost->coordinates.current.y = ghost->coordinates.start.y;
+           &ghost->coordinates.startPosition.x,
+           &ghost->coordinates.startPosition.y);
+    ghost->coordinates.currentPosition.x = ghost->coordinates.startPosition.x;
+    ghost->coordinates.currentPosition.y = ghost->coordinates.startPosition.y;
     ghost->defensiveCyclesLeft = 0;
     ghost->coordinates.direction = DIR_NONE;
     ghost->coordinates.speed = GHOST_AGGRESSIVE_SPEED;
     ghost->coordinates.characterType = ghostType;
+    characterCoordinatesToPixels(&ghost->coordinates);
+}
+
+void characterCoordinatesToPixels(Coordinates *coordinates) {
+    coordinates->currentPosition.x *= TILE;
+    coordinates->currentPosition.y *= TILE;
+    coordinates->startPosition.x *= TILE;
+    coordinates->startPosition.y *= TILE;
 }
