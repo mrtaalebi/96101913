@@ -2,7 +2,6 @@
 #include <SDL2/SDL_image.h>
 
 #include "view.h"
-#include "models.h"
 
 SDL_Renderer* ren;
 
@@ -43,16 +42,12 @@ void paintStage(Game* game) {
     SDL_RenderPresent(ren);
 }
 
-void paintCharacter(Coordinates *lastOn, Point *movedTo, Stage *stage) {
-    //todo: fuck this shit
-    cleanACorpse(lastOn);
-    lastOn->currentPosition.x = movedTo->x;
-    lastOn->currentPosition.y = movedTo->y;
+void paintCharacter(Coordinates *lastOn) {
     renderACharacter(lastOn);
     SDL_RenderPresent(ren);
 }
 
-void paintBackgrounds(double x, double y, char tile) {
+void paintBackgrounds(int x, int y, char tile) {
     SDL_Texture* icon = NULL;
     switch (tile) {
         case CHEESE: icon = loadTexture("res/icons/cheese_icon.png");
@@ -67,13 +62,8 @@ void paintBackgrounds(double x, double y, char tile) {
             break;
         default: break;
     }
-    renderTexture(icon, (int) y * TILE, (int) x * TILE, TILE, TILE);
+    renderTexture(icon, y * TILE, x * TILE, TILE, TILE);
     SDL_DestroyTexture(icon);
-}
-
-void cleanACorpse(Coordinates *coordinates) {
-    SDL_DestroyTexture(coordinates->texture);
-    SDL_RenderPresent(ren);
 }
 
 void renderACharacter(Coordinates *coordinates) {
@@ -91,6 +81,7 @@ void renderACharacter(Coordinates *coordinates) {
             break;
     }
     renderTexture(icon, coordinates->currentPosition.y, coordinates->currentPosition.x, TILE, TILE);
+    SDL_DestroyTexture(icon);
     coordinates->texture = icon;
 }
 

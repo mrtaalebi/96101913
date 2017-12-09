@@ -15,11 +15,9 @@ void paintStage(Game*);
 
 void renderACharacter(Coordinates*);
 
-void paintBackgrounds(double, double, char);
+void paintBackgrounds(int, int, char);
 
-void paintCharacter(Coordinates *, Point *, Stage *);
-
-void cleanACorpse(Coordinates *);
+void paintCharacter(Coordinates *);
 
 void gameReport(Game*);
 

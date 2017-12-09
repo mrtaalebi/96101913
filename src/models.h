@@ -3,21 +3,21 @@
 
 #include <SDL_render.h>
 
-const int SCREEN_WIDTH, SCREEN_HEIGHT, TILE;
+extern const int SCREEN_WIDTH, SCREEN_HEIGHT, TILE;
 
-const int CYCLES_PER_SECOND, DELAY_MADE_WHEN_PACMAN_KILLS_A_GHOST, GHOST_MAX_DEFENSIVE_TIME_SECONDS;
+extern const int CYCLES_PER_SECOND, DELAY_MADE_WHEN_PACMAN_KILLS_A_GHOST, GHOST_MAX_DEFENSIVE_TIME_SECONDS;
 
 const enum Icons {
     EMPTY = '_', BLOCK = '#', CHEESE = '.', CHERRY = '^', PINEAPPLE = 'O',
 };
 
-const enum gameConditions {
+extern const enum gameConditions {
     CONTINUE = 1, NEW_STAGE = 2, GAME_OVER = 3,
 };
 
-const int PACMAN_NORMAL_SPEED, GHOST_AGGRESSIVE_SPEED, GHOST_DEFENSIVE_SPEED;
+extern const int PACMAN_CYCLES_PER_MOVE, GHOST_AGGRESSIVE_CYCLES_PER_MOVE, GHOST_DEFENSIVE_CYCLES_PER_MOVE;
 
-const int CHEESE_VALUE, CHERRY_VALUE, GHOST_EAT_VALUE;
+extern const int CHEESE_VALUE, CHERRY_VALUE, GHOST_EAT_VALUE;
 
 enum {
     DIR_UP = 1, DIR_RIGHT = 2, DIR_DOWN = 3, DIR_LEFT = 4, DIR_NONE = -1,
@@ -41,7 +41,9 @@ struct {
 } typedef Point;
 
 struct {
-    int speed;
+    //int speed;
+    int cyclesPerMove;
+    int waitedCycles;
     CharacterType characterType;
     Point startPosition;
     Point currentPosition;

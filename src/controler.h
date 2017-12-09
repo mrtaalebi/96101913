@@ -10,7 +10,9 @@ int runAGhostACycle(Game *, Ghost *);
 
 void makeANewRoom(Game *);
 
-void moveACharacter(Coordinates *, Stage *);
+void moveACharacter(Coordinates *, Stage *, bool);
+
+void repairBackgrounds(Coordinates*, Stage*);
 
 void reallyChangeDirection(Coordinates *, Stage *);
 

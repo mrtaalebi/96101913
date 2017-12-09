@@ -65,7 +65,8 @@ void pacmanInit(Pacman *pacman, FILE *map_txt) {
     pacman->coordinates.currentPosition.x = pacman->coordinates.startPosition.x;
     pacman->coordinates.currentPosition.y = pacman->coordinates.startPosition.y;
     pacman->coordinates.direction = DIR_NONE;
-    pacman->coordinates.speed = PACMAN_NORMAL_SPEED;
+    pacman->coordinates.cyclesPerMove = PACMAN_CYCLES_PER_MOVE;
+    pacman->coordinates.waitedCycles = 0;
     pacman->coordinates.characterType = CHARACTER_PACMAN;
     characterCoordinatesToPixels(&pacman->coordinates);
 }
@@ -78,7 +79,8 @@ void ghostInit(Ghost *ghost, FILE *map_txt, int ghostType) {
     ghost->coordinates.currentPosition.y = ghost->coordinates.startPosition.y;
     ghost->defensiveCyclesLeft = 0;
     ghost->coordinates.direction = DIR_NONE;
-    ghost->coordinates.speed = GHOST_AGGRESSIVE_SPEED;
+    ghost->coordinates.cyclesPerMove = GHOST_AGGRESSIVE_CYCLES_PER_MOVE;
+    ghost->coordinates.waitedCycles = 0;
     ghost->coordinates.characterType = ghostType;
     characterCoordinatesToPixels(&ghost->coordinates);
 }

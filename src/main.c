@@ -28,7 +28,7 @@ int main() {
             printf("Your final score is: %d\n", game.pacman.score.totalScore);
             SDL_Delay(1000);
             break;
-        } else if (condition == CONTINUE){
+        } else if (condition == CONTINUE) {
         }
         while (!SDL_TICKS_PASSED(SDL_GetTicks(), startCycleTime + millisPerCycle));
     }
