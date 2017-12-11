@@ -10,12 +10,12 @@ int main() {
     Game game;
     initialize(&game);
     paintStage(&game);
-    SDL_Delay(2000);
+    SDL_Delay(200);
     int condition;
-    int millisPerCycle = (int) (1000.0 / CYCLES_PER_SECOND);
+    int millisPerCycle = (int) (1000.0f / CYCLES_PER_SECOND);
+    int max = 0;
     while (true) {
         int startCycleTime = SDL_GetTicks();
-        //gameReport(&game);
         condition = runACycle(&game);
         if (condition == NEW_STAGE) {
             gameReport(&game);
@@ -28,9 +28,12 @@ int main() {
             printf("Your final score is: %d\n", game.pacman.score.totalScore);
             SDL_Delay(1000);
             break;
-        } else if (condition == CONTINUE) {
-        }
+        } else if (condition == CONTINUE);
+        int thisCycleMillis = SDL_GetTicks() - startCycleTime;
+        printf("%d\n", thisCycleMillis);
+        max = (thisCycleMillis > max) ? thisCycleMillis : max;
         while (!SDL_TICKS_PASSED(SDL_GetTicks(), startCycleTime + millisPerCycle));
     }
+    printf("max: %d\n", max);
     return 0;
 }

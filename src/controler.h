@@ -8,9 +8,11 @@ int runACycle(Game *);
 
 int runAGhostACycle(Game *, Ghost *);
 
+void makeMoveForAGhost(Ghost*, Stage*);
+
 void makeANewRoom(Game *);
 
-void moveACharacter(Coordinates *, Stage *, bool);
+void moveACharacter(Coordinates *, Stage *);
 
 void repairBackgrounds(Coordinates*, Stage*);
 
@@ -24,7 +26,7 @@ int pacmanHitAGhost(Game *, Ghost *);
 
 void checkPacmanAndGhostsCollision(Game *);
 
-bool areNearEnoughToStrike(Point, Point, Game*);
+bool areNearEnoughToStrike(Point, Point);
 
 bool areOnTheSameExactPosition(Point, Point);
 

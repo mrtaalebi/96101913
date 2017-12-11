@@ -1,8 +1,6 @@
 #ifndef VIEW_H
 #define VIEW_H
 
-#include <SDL2/SDL.h>
-
 #include "models.h"
 
 void initiateWindow();
@@ -18,6 +16,8 @@ void renderACharacter(Coordinates*);
 void paintBackgrounds(int, int, char);
 
 void paintCharacter(Coordinates *);
+
+void renderPresent();
 
 void gameReport(Game*);
 

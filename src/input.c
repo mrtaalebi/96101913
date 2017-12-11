@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <SDL2/SDL.h>
+#include <stdbool.h>
 
 #include "input.h"
 #include "models.h"
@@ -37,16 +37,14 @@ void initialize(Game *game) {
         return;
     }
     fscanf(map_txt, "%d %d\n", &game->stage.n, &game->stage.m);
+    game->stage.numberOfFoods = 0;
     for (int i = 0; i < game->stage.n; ++i) {
         for (int j = 0; j < game->stage.m; ++j) {
             fscanf(map_txt, "%c", &game->stage.tiles[i][j]);
+            if (game->stage.tiles[i][j] == CHEESE || game->stage.tiles[i][j] == PINEAPPLE)
+                game->stage.numberOfFoods++;
         }
         fscanf(map_txt, "\n");
-    }
-    for (int i = 0; i < game->stage.n * TILE; ++i) {
-        for (int j = 0; j < game->stage.m * TILE; ++j) {
-            game->stage.background[i][j] = game->stage.tiles[i / TILE][j / TILE];
-        }
     }
     game->stage.roomNumber = 1;
     pacmanInit(&game->pacman, map_txt);
@@ -66,6 +64,7 @@ void pacmanInit(Pacman *pacman, FILE *map_txt) {
     pacman->coordinates.currentPosition.y = pacman->coordinates.startPosition.y;
     pacman->coordinates.direction = DIR_NONE;
     pacman->coordinates.cyclesPerMove = PACMAN_CYCLES_PER_MOVE;
+    pacman->coordinates.isDefensive = false;
     pacman->coordinates.waitedCycles = 0;
     pacman->coordinates.characterType = CHARACTER_PACMAN;
     characterCoordinatesToPixels(&pacman->coordinates);
@@ -80,6 +79,7 @@ void ghostInit(Ghost *ghost, FILE *map_txt, int ghostType) {
     ghost->defensiveCyclesLeft = 0;
     ghost->coordinates.direction = DIR_NONE;
     ghost->coordinates.cyclesPerMove = GHOST_AGGRESSIVE_CYCLES_PER_MOVE;
+    ghost->coordinates.isDefensive = false;
     ghost->coordinates.waitedCycles = 0;
     ghost->coordinates.characterType = ghostType;
     characterCoordinatesToPixels(&ghost->coordinates);

@@ -38,12 +38,13 @@ void paintStage(Game* game) {
     renderACharacter(&game->pinky.coordinates);
     renderACharacter(&game->clyde.coordinates);
     renderACharacter(&game->inky.coordinates);
-
-    SDL_RenderPresent(ren);
 }
 
 void paintCharacter(Coordinates *lastOn) {
     renderACharacter(lastOn);
+}
+
+void renderPresent() {
     SDL_RenderPresent(ren);
 }
 
@@ -68,7 +69,9 @@ void paintBackgrounds(int x, int y, char tile) {
 
 void renderACharacter(Coordinates *coordinates) {
     SDL_Texture* icon = NULL;
-    switch (coordinates->characterType) {
+    if (coordinates->isDefensive) {
+        icon = loadTexture("res/icons/blue_icon.png");
+    } else switch (coordinates->characterType) {
         case CHARACTER_PACMAN: icon = loadTexture("res/icons/pacman_icon.png");
             break;
         case CHARACTER_BLINKY: icon = loadTexture("res/icons/blinky_icon.png");

@@ -1,7 +1,9 @@
 #ifndef MODELS_H
 #define MODELS_H
 
-#include <SDL_render.h>
+#include <stdbool.h>
+
+#include <SDL2/SDL.h>
 
 extern const int SCREEN_WIDTH, SCREEN_HEIGHT, TILE;
 
@@ -24,7 +26,7 @@ enum {
 } typedef Direction;
 
 enum {
-    CHARACTER_PACMAN, CHARACTER_BLINKY, CHARACTER_PINKY, CHARACTER_CLYDE, CHARACTER_INKY,
+    CHARACTER_PACMAN, CHARACTER_BLINKY, CHARACTER_PINKY, CHARACTER_CLYDE, CHARACTER_INKY
 } typedef CharacterType;
 
 struct {
@@ -41,7 +43,6 @@ struct {
 } typedef Point;
 
 struct {
-    //int speed;
     int cyclesPerMove;
     int waitedCycles;
     CharacterType characterType;
@@ -50,6 +51,7 @@ struct {
     Direction direction;
     Direction nextDirection;
     SDL_Texture* texture;
+    bool isDefensive;
 } typedef Coordinates;
 
 struct {
@@ -68,7 +70,7 @@ struct {
     int cycles;
     int roomNumber;
     char tiles[50][50];
-    char background[2500][2500];
+    int numberOfFoods;
 } typedef Stage;
 
 struct {
