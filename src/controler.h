@@ -8,8 +8,6 @@ int runACycle(Game *);
 
 int runAGhostACycle(Game *, Ghost *);
 
-void makeMoveForAGhost(Ghost*, Stage*);
-
 void makeANewRoom(Game *);
 
 void moveACharacter(Coordinates *, Stage *);

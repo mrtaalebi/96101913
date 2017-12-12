@@ -96,6 +96,12 @@
 		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/src/controler.h">
 			<Option target="pacman"/>
 		</Unit>
+		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/src/gui.c">
+			<Option target="pacman"/>
+		</Unit>
+		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/src/gui.h">
+			<Option target="pacman"/>
+		</Unit>
 		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/src/input.c">
 			<Option target="pacman"/>
 		</Unit>

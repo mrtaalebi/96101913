@@ -2,12 +2,12 @@
 #include <stdbool.h>
 
 #include "input.h"
-#include "models.h"
 
-int listener() {
-    int direction = DIR_NONE;
-    SDL_Event event;
-    while (SDL_PollEvent(&event));
+int listener(int eventType) {
+    if (eventType == ARROW_KEY_EVENT) {
+        int direction = DIR_NONE;
+        SDL_Event event;
+        while (SDL_PollEvent(&event));
         SDL_Keycode key = event.key.keysym.sym;
         switch (key) {
             case SDLK_UP:
@@ -25,7 +25,12 @@ int listener() {
             default:
                 break;
         }
-    return direction;
+        return direction;
+    } else if (eventType == WINDOW_EVENT) {
+
+    } else if (eventType == MOUSE_EVENT) {
+
+    }
 }
 
 void initialize(Game *game) {

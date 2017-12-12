@@ -150,6 +150,33 @@ src/controler.c.s:
 	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/controler.c.s
 .PHONY : src/controler.c.s
 
+src/gui.o: src/gui.c.o
+
+.PHONY : src/gui.o
+
+# target to build an object file
+src/gui.c.o:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/gui.c.o
+.PHONY : src/gui.c.o
+
+src/gui.i: src/gui.c.i
+
+.PHONY : src/gui.i
+
+# target to preprocess a source file
+src/gui.c.i:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/gui.c.i
+.PHONY : src/gui.c.i
+
+src/gui.s: src/gui.c.s
+
+.PHONY : src/gui.s
+
+# target to generate assembly for a file
+src/gui.c.s:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/gui.c.s
+.PHONY : src/gui.c.s
+
 src/input.o: src/input.c.o
 
 .PHONY : src/input.o
@@ -270,6 +297,9 @@ help:
 	@echo "... src/controler.o"
 	@echo "... src/controler.i"
 	@echo "... src/controler.s"
+	@echo "... src/gui.o"
+	@echo "... src/gui.i"
+	@echo "... src/gui.s"
 	@echo "... src/input.o"
 	@echo "... src/input.i"
 	@echo "... src/input.s"

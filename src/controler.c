@@ -3,7 +3,6 @@
 #include "controler.h"
 #include "view.h"
 #include "input.h"
-#include "models.h"
 
 int runACycle(Game *game) {
     repairBackgrounds(&game->pacman.coordinates, &game->stage);
@@ -20,7 +19,7 @@ int runACycle(Game *game) {
     runAGhostACycle(game, &game->inky);
     if (++game->pacman.coordinates.waitedCycles == game->pacman.coordinates.cyclesPerMove) {
         game->pacman.coordinates.waitedCycles = 0;
-        int arrowKeyPressed = listener();
+        int arrowKeyPressed = listener(ARROW_KEY_EVENT);
         decideNextDirection(&game->pacman.coordinates, &game->stage, arrowKeyPressed);
         moveACharacter(&game->pacman.coordinates, &game->stage);
         paintCharacter(&game->pacman.coordinates);
@@ -267,7 +266,7 @@ void checkPacmanAndGhostsCollision(Game *game) {
 }
 
 bool areNearEnoughToStrike(Point p1, Point p2) {
-    return ((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y)) < ((float) TILE * TILE / 4.0);
+    return ((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y)) < ((float) TILE * TILE / 2.0);
 }
 
 
@@ -309,7 +308,8 @@ void restartAGhostByPacmanDeath(Ghost *ghost, Stage* stage) {
     ghost->coordinates.waitedCycles = 0;
     ghost->coordinates.direction = DIR_NONE;
     ghost->coordinates.currentPosition = ghost->coordinates.startPosition;
-    ghost->defensiveCyclesLeft = 0;
+    if (ghost->defensiveCyclesLeft >= 0)
+        ghost->defensiveCyclesLeft = 0;
 }
 
 void makeANewRoom(Game *game) {

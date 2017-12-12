@@ -5,10 +5,6 @@
 
 void initiateWindow();
 
-void renderTexture(SDL_Texture*, int, int, int, int);
-
-SDL_Texture* loadTexture(const char*);
-
 void paintStage(Game*);
 
 void renderACharacter(Coordinates*);

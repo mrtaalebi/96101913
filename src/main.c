@@ -34,6 +34,6 @@ int main() {
         max = (thisCycleMillis > max) ? thisCycleMillis : max;
         while (!SDL_TICKS_PASSED(SDL_GetTicks(), startCycleTime + millisPerCycle));
     }
-    printf("max: %d\n", max);
+    printf("max millis in cycles: %d\n", max);
     return 0;
 }

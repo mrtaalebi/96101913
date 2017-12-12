@@ -5,6 +5,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
   "/home/mrtalebi/Projects/CLionProjects/pacman/src/controler.c" "/home/mrtalebi/Projects/CLionProjects/pacman/cmake-build-debug/CMakeFiles/pacman.dir/src/controler.c.o"
+  "/home/mrtalebi/Projects/CLionProjects/pacman/src/gui.c" "/home/mrtalebi/Projects/CLionProjects/pacman/cmake-build-debug/CMakeFiles/pacman.dir/src/gui.c.o"
   "/home/mrtalebi/Projects/CLionProjects/pacman/src/input.c" "/home/mrtalebi/Projects/CLionProjects/pacman/cmake-build-debug/CMakeFiles/pacman.dir/src/input.c.o"
   "/home/mrtalebi/Projects/CLionProjects/pacman/src/main.c" "/home/mrtalebi/Projects/CLionProjects/pacman/cmake-build-debug/CMakeFiles/pacman.dir/src/main.c.o"
   "/home/mrtalebi/Projects/CLionProjects/pacman/src/models.c" "/home/mrtalebi/Projects/CLionProjects/pacman/cmake-build-debug/CMakeFiles/pacman.dir/src/models.c.o"
