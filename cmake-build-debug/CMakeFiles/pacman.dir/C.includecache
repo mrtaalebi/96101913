@@ -15,8 +15,6 @@ view.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/view.h
 input.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/input.h
-models.h
-/home/mrtalebi/Projects/CLionProjects/pacman/src/models.h
 
 /home/mrtalebi/Projects/CLionProjects/pacman/src/controler.h
 stdbool.h
@@ -27,14 +25,10 @@ models.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/gui.c
 stdlib.h
 -
-stdio.h
--
 SDL2_gfxPrimitives.h
 -
 gui.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/gui.h
-models.h
-/home/mrtalebi/Projects/CLionProjects/pacman/src/models.h
 view.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/view.h
 
@@ -49,10 +43,6 @@ stdbool.h
 -
 input.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/input.h
-gui.h
-/home/mrtalebi/Projects/CLionProjects/pacman/src/gui.h
-models.h
-/home/mrtalebi/Projects/CLionProjects/pacman/src/models.h
 
 /home/mrtalebi/Projects/CLionProjects/pacman/src/input.h
 stdio.h
@@ -73,8 +63,6 @@ input.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/input.h
 controler.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/controler.h
-gui.h
-/home/mrtalebi/Projects/CLionProjects/pacman/src/gui.h
 
 /home/mrtalebi/Projects/CLionProjects/pacman/src/models.c
 SDL_pixels.h
@@ -89,10 +77,6 @@ SDL2/SDL.h
 -
 
 /home/mrtalebi/Projects/CLionProjects/pacman/src/utils.c
-stddef.h
--
-utils.h
-/home/mrtalebi/Projects/CLionProjects/pacman/src/utils.h
 
 /home/mrtalebi/Projects/CLionProjects/pacman/src/utils.h
 SDL_pixels.h
@@ -109,12 +93,8 @@ view.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/view.h
 utils.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/utils.h
-gui.h
-/home/mrtalebi/Projects/CLionProjects/pacman/src/gui.h
 input.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/input.h
-models.h
-/home/mrtalebi/Projects/CLionProjects/pacman/src/models.h
 
 /home/mrtalebi/Projects/CLionProjects/pacman/src/view.h
 models.h

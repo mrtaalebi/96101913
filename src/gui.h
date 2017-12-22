@@ -13,7 +13,7 @@ struct {
     char* text;
 } typedef Option;
 
-struct {
+struct menu{
     Option options[10];
     int numberOfOptions;
     int hoveredOptionIndex;
@@ -26,7 +26,7 @@ struct {
 
 Menu* startPauseMenu();
 
-int runPauseMenuACycle(Menu*, int);
+int runPauseMenuACycle(struct menu*, int);
 
 void startPlayingGame(Game* game);
 

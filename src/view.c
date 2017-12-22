@@ -4,9 +4,7 @@
 
 #include "view.h"
 #include "utils.h"
-#include "gui.h"
 #include "input.h"
-#include "models.h"
 
 SDL_Window* win;
 SDL_Renderer* renderer;
@@ -14,6 +12,10 @@ SDL_Renderer* renderer;
 SDL_Surface* background;
 SDL_Texture* back;
 SDL_Rect* rect;
+
+SDL_Surface* littleImage;
+SDL_Texture* littleTexture;
+SDL_Rect* littleRect;
 
 Name* scoreAnimated;
 
@@ -37,6 +39,14 @@ void initiateWindow() {
     rect = malloc(sizeof(SDL_Rect));
     rect->x = 0; rect->y = TILE * 3; rect->w = SCREEN_WIDTH; rect->h = SCREEN_HEIGHT - 5 * TILE;
     SDL_FreeSurface(background);
+    littleImage = IMG_Load("res/pacman_index_image.jpg");
+    littleTexture = SDL_CreateTextureFromSurface(renderer, littleImage);
+    littleRect = malloc(sizeof(SDL_Rect));
+    littleRect->x = (SCREEN_WIDTH - MENU_WIDTH) / 2 + TILE * 2;
+    littleRect->y = SCREEN_HEIGHT - (SCREEN_HEIGHT - MENU_HEIGHT) / 2 - TILE * 6;
+    littleRect->w = MENU_WIDTH - TILE * 4;
+    littleRect->h = TILE * 5;
+    SDL_FreeSurface(littleImage);
     scoreAnimated = malloc(sizeof(Name));
     scoreAnimated->string = " ";
     scoreAnimated->next = NULL;
@@ -173,19 +183,22 @@ void drawPacman(Coordinates* coordinates) {
 void drawGhost(Ghost* ghost, SDL_Color color) {
     int centerX = ghost->coordinates.currentPosition.y + TILE / 2;
     int centerY = ghost->coordinates.currentPosition.x + TILE / 2;
-    if (ghost->defensiveCyclesLeft < 0) return;
     if (ghost->coordinates.isDefensive) color = COLOR_BLUE_GHOST;
-    filledPieRGBA(renderer, (Sint16) centerX, (Sint16) centerY,
+    if (ghost->defensiveCyclesLeft >= 0) {
+        filledPieRGBA(renderer, (Sint16) centerX, (Sint16) centerY,
                       (Sint16) (TILE * CHARACTER_TO_TILE),
                       180, 0, color.r, color.g, color.b, color.a);
-    boxRGBA(renderer, (Sint16) (centerX - TILE * CHARACTER_TO_TILE), (Sint16) (centerY),
-            (Sint16) (centerX + TILE * CHARACTER_TO_TILE), (Sint16) (centerY + TILE * CHARACTER_TO_TILE / 2),
-            color.r, color.g, color.b, color.a);
-    for (int i = 0; i < 3; ++i) {
-        filledEllipseRGBA(renderer,
-                      (Sint16) (centerX - TILE * CHARACTER_TO_TILE + TILE * CHARACTER_TO_TILE / 3 + TILE * CHARACTER_TO_TILE / 3 * 2 * i),
-                      (Sint16) (centerY + TILE * CHARACTER_TO_TILE / 2), (Sint16) (TILE * CHARACTER_TO_TILE / 3), (Sint16) (TILE * CHARACTER_TO_TILE / 2),
-                      color.r, color.g, color.b, color.a);
+        boxRGBA(renderer, (Sint16) (centerX - TILE * CHARACTER_TO_TILE), (Sint16) (centerY),
+                (Sint16) (centerX + TILE * CHARACTER_TO_TILE), (Sint16) (centerY + TILE * CHARACTER_TO_TILE / 2),
+                color.r, color.g, color.b, color.a);
+        for (int i = 0; i < 3; ++i) {
+            filledEllipseRGBA(renderer,
+                              (Sint16) (centerX - TILE * CHARACTER_TO_TILE + TILE * CHARACTER_TO_TILE / 3 +
+                                        TILE * CHARACTER_TO_TILE / 3 * 2 * i),
+                              (Sint16) (centerY + TILE * CHARACTER_TO_TILE / 2),
+                              (Sint16) (TILE * CHARACTER_TO_TILE / 3), (Sint16) (TILE * CHARACTER_TO_TILE / 2),
+                              color.r, color.g, color.b, color.a);
+        }
     }
     switch (ghost->coordinates.direction) {
         case DIR_UP:
@@ -258,10 +271,15 @@ void shadeBackground() {
     boxRGBA(renderer, 0, 0, (Sint16) SCREEN_WIDTH, (Sint16) SCREEN_HEIGHT, 0, 0, 0, 127);
 }
 
-void drawPauseMenu(Menu* menu) {
+void drawMenu() {
     roundedBoxRGBA(renderer, (Sint16) ((SCREEN_WIDTH - MENU_WIDTH) / 2), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2),
                    (Sint16) (SCREEN_WIDTH  - (SCREEN_WIDTH - MENU_WIDTH) / 2), (Sint16) (SCREEN_HEIGHT - (SCREEN_HEIGHT - MENU_HEIGHT) / 2),
                    (Sint16) TILE, COLOR_MENU_BACKGROUND.r, COLOR_MENU_BACKGROUND.g, COLOR_MENU_BACKGROUND.b, COLOR_MENU_BACKGROUND.a);
+    SDL_RenderCopy(renderer, littleTexture, NULL, littleRect);
+}
+
+void drawPauseMenu(Menu* menu) {
+    drawMenu();
     SDL_Color color;
     for (int i = 0; i < menu->numberOfOptions; ++i) {
         if (i == menu->hoveredOptionIndex) color = COLOR_BUTTON_HOVERED;
@@ -277,9 +295,7 @@ void drawPauseMenu(Menu* menu) {
 }
 
 void drawCredits() {
-    roundedBoxRGBA(renderer, (Sint16) ((SCREEN_WIDTH - MENU_WIDTH) / 2), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2),
-                   (Sint16) (SCREEN_WIDTH  - (SCREEN_WIDTH - MENU_WIDTH) / 2), (Sint16) (SCREEN_HEIGHT - (SCREEN_HEIGHT - MENU_HEIGHT) / 2),
-                   (Sint16) TILE, COLOR_MENU_BACKGROUND.r, COLOR_MENU_BACKGROUND.g, COLOR_MENU_BACKGROUND.b, COLOR_MENU_BACKGROUND.a);
+    drawMenu();
     SDL_Color color = COLOR_TEXT_CREDITS;
     stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE),
                "credit goes here!" ,color.r, color.g, color.b, color.a);
@@ -287,9 +303,7 @@ void drawCredits() {
 }
 
 void drawHelp() {
-    roundedBoxRGBA(renderer, (Sint16) ((SCREEN_WIDTH - MENU_WIDTH) / 2), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2),
-                   (Sint16) (SCREEN_WIDTH  - (SCREEN_WIDTH - MENU_WIDTH) / 2), (Sint16) (SCREEN_HEIGHT - (SCREEN_HEIGHT - MENU_HEIGHT) / 2),
-                   (Sint16) TILE, COLOR_MENU_BACKGROUND.r, COLOR_MENU_BACKGROUND.g, COLOR_MENU_BACKGROUND.b, COLOR_MENU_BACKGROUND.a);
+    drawMenu();
     SDL_Color color = COLOR_TEXT_CREDITS;
     stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE),
                "help goes here!" ,color.r, color.g, color.b, color.a);
@@ -297,16 +311,14 @@ void drawHelp() {
 }
 
 void drawHallOfFame() {
-    roundedBoxRGBA(renderer, (Sint16) ((SCREEN_WIDTH - MENU_WIDTH) / 2), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2),
-                   (Sint16) (SCREEN_WIDTH  - (SCREEN_WIDTH - MENU_WIDTH) / 2), (Sint16) (SCREEN_HEIGHT - (SCREEN_HEIGHT - MENU_HEIGHT) / 2),
-                   (Sint16) TILE, COLOR_MENU_BACKGROUND.r, COLOR_MENU_BACKGROUND.g, COLOR_MENU_BACKGROUND.b, COLOR_MENU_BACKGROUND.a);
+    drawMenu();
     SDL_Color color;
     Fame* fames = readFames();
     for (int i = 0; i < 10; ++i) {
         color = COLOR_TEXT_BUTTON;
         char * string = malloc(100);
         sprintf(string, "% .2d- %s % 16d", i + 1, fames[i].name, fames[i].score.totalScore);
-        stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + BUTTON_HEIGHT * 1 * (i + 1) + TILE),
+        stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + BUTTON_HEIGHT * .75 * (i + 1) + TILE),
                   string ,color.r, color.g, color.b, color.a);
     }
     renderPresent();

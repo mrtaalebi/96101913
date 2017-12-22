@@ -1,8 +1,6 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include <SDL2_gfxPrimitives.h>
 #include "gui.h"
-#include "models.h"
 #include "view.h"
 
 const int ON_MENU_CYCLES_PER_SECOND = 10;
@@ -16,7 +14,6 @@ const SDL_Color COLOR_MENU_BACKGROUND = {60, 63, 65, 255},
         COLOR_TEXT_CREDITS = {217, 165, 72, 255};
 
 Menu* startPauseMenu() {
-    shadeBackground();
     Menu* pauseMenuOptions = malloc(sizeof(Menu));
     pauseMenuOptions->hoveredOptionIndex = 0;
     pauseMenuOptions->numberOfOptions = 5;

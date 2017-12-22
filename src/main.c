@@ -4,7 +4,6 @@
 #include "view.h"
 #include "input.h"
 #include "controler.h"
-#include "gui.h"
 
 int main() {
     initiateWindow();
@@ -12,9 +11,9 @@ int main() {
     initialize(&game);
     int millisPerCycle = (int) (1000.0f / CYCLES_PER_SECOND);
     int millisPerCycleInMenu = (int) (1000.0f / ON_MENU_CYCLES_PER_SECOND);
-    int max = 0;
     NowOn nowOn = PAUSE_MENU;
-    // look out: each part has its own loop such pause_menu, hall_of_fame, credits
+    // look out: each part has its own loop and all are in games loop
+    bool lost = false;
     bool frameOn = true;
     while (frameOn) {
         switch (nowOn) {
@@ -29,6 +28,7 @@ int main() {
                     if (event == KEY_ESCAPE) {
                         nowOn = PAUSE_MENU;
                         onGame = false;
+                        shadeBackground();
                         continue;
                     }
                     int condition = runACycle(&game, event);
@@ -40,6 +40,7 @@ int main() {
                     } else if (condition == GAME_OVER) {
                         nowOn = HALL_OF_FAME;
                         onGame = false;
+                        lost = true;
                     } else if (condition == CONTINUE);
 
                     while (!SDL_TICKS_PASSED(SDL_GetTicks(), startCycleTime + millisPerCycle));
@@ -56,8 +57,10 @@ int main() {
                     int condition = runPauseMenuACycle(pauseMenu, event);
                     switch (condition) {
                         case PLAYING_GAME:
-                            onPause = false;
-                            nowOn = PLAYING_GAME;
+                            if (! lost) {
+                                onPause = false;
+                                nowOn = PLAYING_GAME;
+                            }
                             break;
                         case HALL_OF_FAME:
                             onPause = false;
@@ -66,6 +69,7 @@ int main() {
                         case HELP:
                             onPause = false;
                             nowOn = HELP;
+                            break;
                         case CREDITS:
                             onPause = false;
                             nowOn = CREDITS;

@@ -2,8 +2,6 @@
 #include <stdbool.h>
 
 #include "input.h"
-#include "gui.h"
-#include "models.h"
 
 int listener() {
     SDL_Event event;

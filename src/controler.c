@@ -3,7 +3,10 @@
 #include "controler.h"
 #include "view.h"
 #include "input.h"
-#include "models.h"
+
+int mod(int a, int b);
+
+Point destination(CharacterType ghostType, Coordinates* blinky, Coordinates* pacman, Stage* stage) ;
 
 int runACycle(Game *game, Direction pacmanDirection) {
     game->stage.cycles++;
@@ -113,6 +116,7 @@ void reallyChangeDirection(Coordinates *coordinates, Stage *stage) {
     }
 }
 
+
 int runAGhostACycle(Game *game, Ghost *ghost) {
     if (ghost->defensiveCyclesLeft == 0) {
         ghost->coordinates.cyclesPerMove = GHOST_AGGRESSIVE_CYCLES_PER_MOVE;
@@ -122,13 +126,26 @@ int runAGhostACycle(Game *game, Ghost *ghost) {
         ghost->coordinates.isDefensive = true;
         ghost->coordinates.cyclesPerMove = GHOST_DEFENSIVE_CYCLES_PER_MOVE;
     } else {
-        ghost->defensiveCyclesLeft++;
-        return 0;
+        ghost->coordinates.cyclesPerMove = GHOST_AGGRESSIVE_CYCLES_PER_MOVE;
+        if (areOnTheSameExactPosition(ghost->coordinates.currentPosition, ghost->coordinates.startPosition))
+            ghost->defensiveCyclesLeft = 0;
     }
 
     if (ghost->coordinates.waitedCycles == ghost->coordinates.cyclesPerMove) {
         ghost->coordinates.waitedCycles = 0;
-        ghost->coordinates.direction = rand() % 4 + 1;
+        Point intOn = {ghost->coordinates.currentPosition.x / TILE, ghost->coordinates.currentPosition.y / TILE};
+        Point intTo = destination(ghost->coordinates.characterType, &game->blinky.coordinates, &game->pacman.coordinates, &game->stage);
+        if (ghost->defensiveCyclesLeft != 0) {
+            intTo.x = ghost->coordinates.startPosition.x;
+            intTo.y = ghost->coordinates.startPosition.y;
+        }
+        intTo.x /= TILE;
+        intTo.y /= TILE;
+        Coordinates test = ghost->coordinates;
+        test.direction = shortestPath(&game->stage, intOn, intTo);
+        moveACharacter(&test, &game->stage);
+        if (!areOnTheSameExactPosition(ghost->coordinates.currentPosition, test.currentPosition))
+            ghost->coordinates.direction = test.direction;
         moveACharacter(&ghost->coordinates, &game->stage);
     } else if (ghost->coordinates.waitedCycles > ghost->coordinates.cyclesPerMove)
         ghost->coordinates.waitedCycles = 0;
@@ -136,10 +153,76 @@ int runAGhostACycle(Game *game, Ghost *ghost) {
         ghost->coordinates.waitedCycles++;
 }
 
+Point destination(CharacterType ghostType, Coordinates* blinky, Coordinates* pacman, Stage* stage) {
+    return pacman->currentPosition;
+    switch (ghostType) {
+        case CHARACTER_BLINKY:
+            return pacman->currentPosition;
+        case CHARACTER_PINKY:
+            break;
+        case CHARACTER_CLYDE:
+            break;
+        case CHARACTER_INKY:
+            break;
+        default: return pacman->currentPosition;
+    }
+
+}
 
 /// to programmer: only accepts TILE values for x and y
 Direction shortestPath(Stage* stage, Point on, Point to) {
-    return rand() % 4 + 1;
+    int n = stage->n;
+    int m = stage->m;
+    Point queue[n * m];
+    int front = 0;
+    int back = 1;
+    Direction way[n][m];
+    bool visited[n][m];
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            visited[i][j] = stage->tiles[i][j] == BLOCK;
+            way[i][j] = DIR_NONE;
+        }
+    }
+    visited[on.x][on.y] = true;
+    way[on.x - 1][on.y] = DIR_UP;
+    way[on.x + 1][on.y] = DIR_DOWN;
+    way[on.x][on.y - 1] = DIR_LEFT;
+    way[on.x][on.y + 1] = DIR_RIGHT;
+    queue[0] = on;
+    while (back > front) {
+        // success condition
+        if (areOnTheSameExactPosition(queue[front], to)) {
+            break;
+        }
+        // removing
+        Point parent = queue[front];
+        visited[parent.x][parent.y] = true;
+        front++;
+
+        for (int i = -1; i <= 1; ++i) {
+            for (int j = -1; j <= 1; ++j) {
+                if (i * j != 0) continue;
+                if (!visited[mod(parent.x + i, n)][mod(parent.y + j, m)]) {
+                    Point new = {mod(parent.x + i, n), mod(parent.y + j, m)};
+                    queue[back++] = new;
+                    if (front > 1) {
+                        int a = mod(parent.x + i, n);
+                        int b = mod(parent.y + j, m);
+                        way[a][b] = way[parent.x][parent.y];
+                    }
+                }
+            }
+        }
+    }
+    printf("%d\n", way[queue[front].x][queue[front].y]);
+    return way[queue[front].x][queue[front].y];
+}
+
+int mod(int a, int b) {
+    if (a == -1) return b - 1;
+    if (a == b) return 0;
+    return a;
 }
 
 int checkRemainingFoods(Stage *stage) {
@@ -237,8 +320,7 @@ int pacmanHitAGhost(Game *game, Ghost *ghost) {
         drawText(string, ghost->coordinates.currentPosition.y, ghost->coordinates.currentPosition.x, COLOR_EAT_GHOST);
         game->pacman.score.ghostsKilled++;
         game->pacman.score.totalScore += GHOST_EAT_VALUE;
-        ghost->coordinates.currentPosition = ghost->coordinates.startPosition;
-        ghost->defensiveCyclesLeft = -1 * DELAY_MADE_WHEN_PACMAN_KILLS_A_GHOST * CYCLES_PER_SECOND;
+        ghost->defensiveCyclesLeft = -1;
         ghost->coordinates.cyclesPerMove = GHOST_DEFENSIVE_CYCLES_PER_MOVE;
         ghost->coordinates.waitedCycles = 0;
         return -1;

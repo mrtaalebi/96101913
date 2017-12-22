@@ -81,14 +81,6 @@ CMakeFiles/pacman.dir/src/models.c.o: /usr/include/SDL2/begin_code.h
 CMakeFiles/pacman.dir/src/models.c.o: /usr/include/SDL2/close_code.h
 
 CMakeFiles/pacman.dir/src/utils.c.o: ../src/utils.c
-CMakeFiles/pacman.dir/src/utils.c.o: ../src/utils.h
-CMakeFiles/pacman.dir/src/utils.c.o: /usr/include/SDL2/SDL_config.h
-CMakeFiles/pacman.dir/src/utils.c.o: /usr/include/SDL2/SDL_endian.h
-CMakeFiles/pacman.dir/src/utils.c.o: /usr/include/SDL2/SDL_pixels.h
-CMakeFiles/pacman.dir/src/utils.c.o: /usr/include/SDL2/SDL_platform.h
-CMakeFiles/pacman.dir/src/utils.c.o: /usr/include/SDL2/SDL_stdinc.h
-CMakeFiles/pacman.dir/src/utils.c.o: /usr/include/SDL2/begin_code.h
-CMakeFiles/pacman.dir/src/utils.c.o: /usr/include/SDL2/close_code.h
 
 CMakeFiles/pacman.dir/src/view.c.o: ../src/gui.h
 CMakeFiles/pacman.dir/src/view.c.o: ../src/input.h

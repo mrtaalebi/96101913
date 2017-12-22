@@ -12,10 +12,4 @@ struct name {
     struct name* next;
 } typedef Name;
 
-
-
-void addLast(struct name* list, struct name* new);
-
-Name* popFirst(struct name** list);
-
 #endif
