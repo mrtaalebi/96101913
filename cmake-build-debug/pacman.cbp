@@ -117,6 +117,12 @@
 		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/src/models.h">
 			<Option target="pacman"/>
 		</Unit>
+		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/src/utils.c">
+			<Option target="pacman"/>
+		</Unit>
+		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/src/utils.h">
+			<Option target="pacman"/>
+		</Unit>
 		<Unit filename="/home/mrtalebi/Projects/CLionProjects/pacman/src/view.c">
 			<Option target="pacman"/>
 		</Unit>

@@ -1,33 +1,39 @@
-#include <stdbool.h>
-#include <SDL_surface.h>
-#include <SDL_render.h>
+#ifndef GUI_H
+#define GUI_H
+
+#include "models.h"
+
+const int ON_MENU_CYCLES_PER_SECOND;
+
+const int MENU_WIDTH, MENU_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT;
+
+const SDL_Color COLOR_MENU_BACKGROUND, COLOR_BUTTON, COLOR_BUTTON_HOVERED, COLOR_TEXT_BUTTON, COLOR_TEXT_CREDITS;
 
 struct {
-    SDL_Surface* surface;
-}typedef Button;
+    char* text;
+} typedef Option;
 
 struct {
-    char* string;
-    SDL_Texture* texture;
-    SDL_Color* textColor;
-    //if ( !gTextTexture.loadFromRenderedText( "The quick brown fox jumps over the lazy dog", textColor ) );
-} typedef Label;
+    Option options[10];
+    int numberOfOptions;
+    int hoveredOptionIndex;
+} typedef Menu;
 
 struct {
-    char* file;
-    SDL_Surface* image;
-} typedef Image;
+    char* name;
+    Score score;
+} typedef Fame;
 
+Menu* startPauseMenu();
 
+int runPauseMenuACycle(Menu*, int);
 
-void openIndexMenu();
+void startPlayingGame(Game* game);
 
-void closeIndexMenu();
+void startHallOfFame();
 
-void startGameSheet();
+void startCredits();
 
-void endGameSheet();
+void startHelp();
 
-void startHighScoreSheet();
-
-void endHighScoreSheet();
+#endif

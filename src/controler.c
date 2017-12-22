@@ -3,47 +3,28 @@
 #include "controler.h"
 #include "view.h"
 #include "input.h"
+#include "models.h"
 
-int runACycle(Game *game) {
-    repairBackgrounds(&game->pacman.coordinates, &game->stage);
-    if (game->blinky.defensiveCyclesLeft >= 0) repairBackgrounds(&game->blinky.coordinates, &game->stage);
-    if (game->pinky.defensiveCyclesLeft >= 0) repairBackgrounds(&game->pinky.coordinates, &game->stage);
-    if (game->clyde.defensiveCyclesLeft >= 0) repairBackgrounds(&game->clyde.coordinates, &game->stage);
-    if (game->inky.defensiveCyclesLeft >= 0) repairBackgrounds(&game->inky.coordinates, &game->stage);
+int runACycle(Game *game, Direction pacmanDirection) {
     game->stage.cycles++;
-    pacmanEat(game);
-    checkPacmanAndGhostsCollision(game);
+    paintStage(game);
     runAGhostACycle(game, &game->blinky);
     runAGhostACycle(game, &game->pinky);
     runAGhostACycle(game, &game->clyde);
     runAGhostACycle(game, &game->inky);
-    if (++game->pacman.coordinates.waitedCycles == game->pacman.coordinates.cyclesPerMove) {
-        game->pacman.coordinates.waitedCycles = 0;
-        int arrowKeyPressed = listener(ARROW_KEY_EVENT);
-        decideNextDirection(&game->pacman.coordinates, &game->stage, arrowKeyPressed);
-        moveACharacter(&game->pacman.coordinates, &game->stage);
-        paintCharacter(&game->pacman.coordinates);
-    }
-    paintCharacter(&game->pacman.coordinates);
-    if (game->blinky.defensiveCyclesLeft >= 0) paintCharacter(&game->blinky.coordinates);
-    if (game->pinky.defensiveCyclesLeft >= 0) paintCharacter(&game->pinky.coordinates);
-    if (game->clyde.defensiveCyclesLeft >= 0) paintCharacter(&game->clyde.coordinates);
-    if (game->inky.defensiveCyclesLeft >= 0) paintCharacter(&game->inky.coordinates);
-    renderPresent();
-    int foodsLeft = checkRemainingFoods(&game->stage);
-    if (foodsLeft == 0 && game->pacman.hearts > 0) {
-        return NEW_STAGE;
-    } else if (game->pacman.hearts == 0) {
-        return GAME_OVER;
-    } else {
-        return CONTINUE;
-    }
+    checkPacmanAndGhostsCollision(game);
+    runPacmanACycle(game, pacmanDirection);
+    if (checkRemainingFoods(&game->stage) == 0 && game->pacman.hearts > 0) return NEW_STAGE;
+    else if (game->pacman.hearts == 0) return GAME_OVER;
+    else return CONTINUE;
 }
 
-void makeMoveForAGhost(Ghost* ghost, Stage* stage) {
-    if (ghost->defensiveCyclesLeft >= 0) {
-        repairBackgrounds(&ghost->coordinates, stage);
-        paintCharacter(&ghost->coordinates);
+void runPacmanACycle(Game* game, Direction arrowKey) {
+    pacmanEat(game);
+    if (++game->pacman.coordinates.waitedCycles == game->pacman.coordinates.cyclesPerMove) {
+        game->pacman.coordinates.waitedCycles = 0;
+        decideNextDirection(&game->pacman.coordinates, &game->stage, arrowKey);
+        moveACharacter(&game->pacman.coordinates, &game->stage);
     }
 }
 
@@ -104,35 +85,6 @@ int getNextInCircular(int index, int size) {
     // todo a small visual bug can be fixed but not a stopping bug!
 }
 
-void repairBackgrounds(Coordinates* coordinates, Stage* stage) {
-    int exactX = coordinates->currentPosition.x / TILE;
-    int exactY = coordinates->currentPosition.y / TILE;
-    switch (coordinates->direction) {
-        case DIR_UP:
-            paintBackgrounds(exactX, exactY, stage->tiles[exactX][exactY]);
-            if (coordinates->currentPosition.x % TILE != 0)
-                paintBackgrounds(exactX + 1, exactY, stage->tiles[exactX + 1][exactY]);
-            break;
-        case DIR_RIGHT:
-            paintBackgrounds(exactX, exactY, stage->tiles[exactX][exactY]);
-            if (coordinates->currentPosition.y % TILE != 0)
-                paintBackgrounds(exactX, exactY + 1, stage->tiles[exactX][exactY + 1]);
-            break;
-        case DIR_DOWN:
-            paintBackgrounds(exactX, exactY, stage->tiles[exactX][exactY]);
-            if (coordinates->currentPosition.x % TILE != 0)
-                paintBackgrounds(exactX + 1, exactY, stage->tiles[exactX + 1][exactY]);
-            break;
-        case DIR_LEFT:
-            paintBackgrounds(exactX, exactY, stage->tiles[exactX][exactY]);
-            if (coordinates->currentPosition.y % TILE != 0)
-                paintBackgrounds(exactX, exactY + 1, stage->tiles[exactX][exactY + 1]);
-            break;
-        default:
-            break;
-    }
-}
-
 /// this shouldn't get touched because me myself don't know how it works!
 void decideNextDirection(Coordinates *coordinates, Stage *stage, int newDirection) {
     if (newDirection != DIR_NONE) {
@@ -162,34 +114,32 @@ void reallyChangeDirection(Coordinates *coordinates, Stage *stage) {
 }
 
 int runAGhostACycle(Game *game, Ghost *ghost) {
-    if (ghost->defensiveCyclesLeft > 0) {
+    if (ghost->defensiveCyclesLeft == 0) {
+        ghost->coordinates.cyclesPerMove = GHOST_AGGRESSIVE_CYCLES_PER_MOVE;
+        ghost->coordinates.isDefensive = false;
+    } else if (ghost->defensiveCyclesLeft > 0) {
         ghost->defensiveCyclesLeft--;
         ghost->coordinates.isDefensive = true;
         ghost->coordinates.cyclesPerMove = GHOST_DEFENSIVE_CYCLES_PER_MOVE;
-    } else if (ghost->defensiveCyclesLeft == 0) {
-        ghost->coordinates.cyclesPerMove = GHOST_AGGRESSIVE_CYCLES_PER_MOVE;
-        ghost->coordinates.isDefensive = false;
     } else {
         ghost->defensiveCyclesLeft++;
         return 0;
     }
-    if (++ghost->coordinates.waitedCycles >= ghost->coordinates.cyclesPerMove) {
+
+    if (ghost->coordinates.waitedCycles == ghost->coordinates.cyclesPerMove) {
         ghost->coordinates.waitedCycles = 0;
-        Coordinates newOne = ghost->coordinates;
-        moveACharacter(&newOne, &game->stage);
-        if (areOnTheSameExactPosition(newOne.currentPosition, ghost->coordinates.currentPosition)) {
-            newOne.direction = rand() % 4 + 1;
-            moveACharacter(&newOne, &game->stage);
-            for (int i = 0; i < 4; ++i) {
-                if (areOnTheSameExactPosition(newOne.currentPosition, ghost->coordinates.currentPosition)) {
-                    newOne.direction = (newOne.direction + 1) % 4 + 1;
-                    moveACharacter(&newOne, &game->stage);
-                } else break;
-            }
-        }
-        ghost->coordinates.direction = newOne.direction;
+        ghost->coordinates.direction = rand() % 4 + 1;
         moveACharacter(&ghost->coordinates, &game->stage);
-    }
+    } else if (ghost->coordinates.waitedCycles > ghost->coordinates.cyclesPerMove)
+        ghost->coordinates.waitedCycles = 0;
+    else
+        ghost->coordinates.waitedCycles++;
+}
+
+
+/// to programmer: only accepts TILE values for x and y
+Direction shortestPath(Stage* stage, Point on, Point to) {
+    return rand() % 4 + 1;
 }
 
 int checkRemainingFoods(Stage *stage) {
@@ -203,21 +153,26 @@ void pacmanEat(Game *game) {
     int exactY = getNextInCircular(middleY - middleY % TILE, game->stage.m);
     char pacmanOn = game->stage.tiles[exactX / TILE][exactY / TILE];
     bool hasAte = false;
+    int value = 0;
     switch (pacmanOn) {
         case CHEESE:
             hasAte = true;
             game->pacman.score.cheeseCount++;
             game->pacman.score.totalScore += CHEESE_VALUE;
+            value = CHEESE_VALUE;
             game->stage.numberOfFoods--;
             break;
         case CHERRY:
             hasAte = true;
             game->pacman.score.cherryCount++;
             game->pacman.score.totalScore += CHERRY_VALUE;
+            value = CHERRY_VALUE;
             break;
         case PINEAPPLE:
             hasAte = true;
             game->pacman.score.pineappleCount++;
+            game->pacman.score.totalScore += PINEAPPLE_VALUE;
+            value = PINEAPPLE_VALUE;
             pacmanBecomeAHero(game);
             game->stage.numberOfFoods--;
             break;
@@ -226,7 +181,9 @@ void pacmanEat(Game *game) {
     }
     if (hasAte) {
         emptySomeBackgroundCells(exactX, exactY, &game->stage);
-        paintBackgrounds(exactX / TILE, exactY / TILE, EMPTY);
+        char* score = malloc(20);
+        sprintf(score, "%d", value);
+        drawText(score, exactY, exactX, COLOR_EAT_GOODS);
     }
 }
 
@@ -243,7 +200,8 @@ void pacmanBecomeAHero(Game *game) {
 
 void ghostBecomeDefensive(Ghost * ghost) {
     ghost->coordinates.cyclesPerMove = GHOST_DEFENSIVE_CYCLES_PER_MOVE;
-    ghost->defensiveCyclesLeft = GHOST_MAX_DEFENSIVE_TIME_SECONDS * CYCLES_PER_SECOND;
+    if (ghost->defensiveCyclesLeft >= 0)
+        ghost->defensiveCyclesLeft = GHOST_MAX_DEFENSIVE_TIME_SECONDS * CYCLES_PER_SECOND;
 }
 
 void checkPacmanAndGhostsCollision(Game *game) {
@@ -266,15 +224,17 @@ void checkPacmanAndGhostsCollision(Game *game) {
 }
 
 bool areNearEnoughToStrike(Point p1, Point p2) {
-    return ((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y)) < ((float) TILE * TILE / 2.0);
+    return ((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y)) < (TILE * TILE * 2);
 }
 
 
 /// returns +10: aggressive ghost
 /// returns -1: defensive ghost
 int pacmanHitAGhost(Game *game, Ghost *ghost) {
-    if (ghost->defensiveCyclesLeft) {
-        repairBackgrounds(&ghost->coordinates, &game->stage);
+    if (ghost->defensiveCyclesLeft > 0) {
+        char* string = malloc(20);
+        sprintf(string, "%d", GHOST_EAT_VALUE);
+        drawText(string, ghost->coordinates.currentPosition.y, ghost->coordinates.currentPosition.x, COLOR_EAT_GHOST);
         game->pacman.score.ghostsKilled++;
         game->pacman.score.totalScore += GHOST_EAT_VALUE;
         ghost->coordinates.currentPosition = ghost->coordinates.startPosition;
@@ -282,7 +242,7 @@ int pacmanHitAGhost(Game *game, Ghost *ghost) {
         ghost->coordinates.cyclesPerMove = GHOST_DEFENSIVE_CYCLES_PER_MOVE;
         ghost->coordinates.waitedCycles = 0;
         return -1;
-    } else {
+    } else if (ghost->defensiveCyclesLeft == 0){
         restartRoomByPacmanDeath(game);
         return 10;
     }
@@ -290,33 +250,34 @@ int pacmanHitAGhost(Game *game, Ghost *ghost) {
 
 void restartRoomByPacmanDeath(Game *game) {
     SDL_Delay(500);
-    repairBackgrounds(&game->pacman.coordinates, &game->stage);
     game->pacman.hearts--;
     game->pacman.coordinates.currentPosition = game->pacman.coordinates.startPosition;
     game->pacman.coordinates.direction = DIR_NONE;
     game->pacman.coordinates.cyclesPerMove = PACMAN_CYCLES_PER_MOVE;
     game->pacman.coordinates.waitedCycles = 0;
-    restartAGhostByPacmanDeath(&game->blinky, &game->stage);
-    restartAGhostByPacmanDeath(&game->pinky, &game->stage);
-    restartAGhostByPacmanDeath(&game->clyde, &game->stage);
-    restartAGhostByPacmanDeath(&game->inky, &game->stage);
+    restartAGhostByPacmanDeath(&game->blinky);
+    restartAGhostByPacmanDeath(&game->pinky);
+    restartAGhostByPacmanDeath(&game->clyde);
+    restartAGhostByPacmanDeath(&game->inky);
 }
 
-void restartAGhostByPacmanDeath(Ghost *ghost, Stage* stage) {
-    repairBackgrounds(&ghost->coordinates, stage);
+void restartAGhostByPacmanDeath(Ghost *ghost) {
     ghost->coordinates.cyclesPerMove = GHOST_AGGRESSIVE_CYCLES_PER_MOVE;
     ghost->coordinates.waitedCycles = 0;
     ghost->coordinates.direction = DIR_NONE;
     ghost->coordinates.currentPosition = ghost->coordinates.startPosition;
-    if (ghost->defensiveCyclesLeft >= 0)
-        ghost->defensiveCyclesLeft = 0;
+    ghost->defensiveCyclesLeft = 0;
 }
 
 void makeANewRoom(Game *game) {
     int roomNumber = game->stage.roomNumber;
+    int cycles = game->stage.cycles;
     int pacmanHearts = game->pacman.hearts;
+    Score pacmanScore = game->pacman.score;
     initialize(game);
+    game->pacman.score = pacmanScore;
     game->pacman.hearts = pacmanHearts;
     game->stage.roomNumber = roomNumber + 1;
+    game->stage.cycles = cycles;
     SDL_Delay(500);
 }

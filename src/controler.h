@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include "models.h"
 
-int runACycle(Game *);
+int runACycle(Game *, Direction);
 
 int runAGhostACycle(Game *, Ghost *);
 
@@ -12,7 +12,7 @@ void makeANewRoom(Game *);
 
 void moveACharacter(Coordinates *, Stage *);
 
-void repairBackgrounds(Coordinates*, Stage*);
+void runPacmanACycle(Game*, Direction);
 
 void reallyChangeDirection(Coordinates *, Stage *);
 
@@ -34,11 +34,13 @@ void ghostBecomeDefensive(Ghost *);
 
 void restartRoomByPacmanDeath(Game *);
 
-void restartAGhostByPacmanDeath(Ghost *, Stage*);
+void restartAGhostByPacmanDeath(Ghost *);
 
 int getNextInCircular(int, int);
 
 void pacmanEat(Game *);
+
+Direction shortestPath(Stage* stage, Point on, Point to);
 
 void emptySomeBackgroundCells(int, int, Stage*);
 

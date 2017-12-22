@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.9)
 project(pacman C)
 
 set(CMAKE_C_STANDARD 99)
-set(SOURCE src/main.c src/input.c src/input.h src/view.c src/view.h src/models.h src/models.c src/controler.c src/controler.h src/gui.c src/gui.h)
+set(SOURCE src/main.c src/input.c src/input.h src/view.c src/view.h src/models.h src/models.c src/controler.c src/controler.h src/gui.c src/gui.h src/utils.c src/utils.h)
 add_executable(pacman "${SOURCE}")
 include_directories(src)
 

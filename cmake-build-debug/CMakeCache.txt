@@ -233,8 +233,17 @@ SDL2_LIB_DEPENDS:STATIC=
 //The directory containing a CMake configuration file for SDL2_image.
 SDL2_image_DIR:PATH=SDL2_image_DIR-NOTFOUND
 
+//The directory containing a CMake configuration file for SDL2_ttf.
+SDL2_ttf_DIR:PATH=SDL2_ttf_DIR-NOTFOUND
+
 //Path to a library.
 SDL2؛IMAGE_LIBRARY:FILEPATH=SDL2؛IMAGE_LIBRARY-NOTFOUND
+
+//Path to a file.
+SDL_TTF_INCLUDE_DIR:PATH=SDL_TTF_INCLUDE_DIR-NOTFOUND
+
+//Path to a library.
+SDL_TTF_LIBRARY:FILEPATH=SDL_TTF_LIBRARY-NOTFOUND
 
 //Value Computed by CMake
 pacman_BINARY_DIR:STATIC=/home/mrtalebi/Projects/CLionProjects/pacman/cmake-build-debug

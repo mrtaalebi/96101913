@@ -258,6 +258,33 @@ src/models.c.s:
 	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/models.c.s
 .PHONY : src/models.c.s
 
+src/utils.o: src/utils.c.o
+
+.PHONY : src/utils.o
+
+# target to build an object file
+src/utils.c.o:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/utils.c.o
+.PHONY : src/utils.c.o
+
+src/utils.i: src/utils.c.i
+
+.PHONY : src/utils.i
+
+# target to preprocess a source file
+src/utils.c.i:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/utils.c.i
+.PHONY : src/utils.c.i
+
+src/utils.s: src/utils.c.s
+
+.PHONY : src/utils.s
+
+# target to generate assembly for a file
+src/utils.c.s:
+	$(MAKE) -f CMakeFiles/pacman.dir/build.make CMakeFiles/pacman.dir/src/utils.c.s
+.PHONY : src/utils.c.s
+
 src/view.o: src/view.c.o
 
 .PHONY : src/view.o
@@ -309,6 +336,9 @@ help:
 	@echo "... src/models.o"
 	@echo "... src/models.i"
 	@echo "... src/models.s"
+	@echo "... src/utils.o"
+	@echo "... src/utils.i"
+	@echo "... src/utils.s"
 	@echo "... src/view.o"
 	@echo "... src/view.i"
 	@echo "... src/view.s"
