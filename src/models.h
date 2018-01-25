@@ -34,7 +34,7 @@ enum {
 };
 
 enum {
-    DIR_UP = 1, DIR_RIGHT = 2, DIR_DOWN = 3, DIR_LEFT = 4, DIR_NONE = -1,
+    DIR_UP = 1, DIR_RIGHT = 2, DIR_DOWN = 3, DIR_LEFT = 4, DIR_NONE = 5,
 } typedef Direction;
 
 enum {

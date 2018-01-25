@@ -15,6 +15,8 @@ view.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/view.h
 input.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/input.h
+models.h
+/home/mrtalebi/Projects/CLionProjects/pacman/src/models.h
 
 /home/mrtalebi/Projects/CLionProjects/pacman/src/controler.h
 stdbool.h
@@ -63,6 +65,8 @@ input.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/input.h
 controler.h
 /home/mrtalebi/Projects/CLionProjects/pacman/src/controler.h
+models.h
+/home/mrtalebi/Projects/CLionProjects/pacman/src/models.h
 
 /home/mrtalebi/Projects/CLionProjects/pacman/src/models.c
 SDL_pixels.h

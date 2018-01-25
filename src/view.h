@@ -36,6 +36,6 @@ void drawCredits();
 
 void drawHelp();
 
-void drawHallOfFame();
+void drawHallOfFame(char* name, int score);
 
 #endif

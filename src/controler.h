@@ -8,6 +8,12 @@ int runACycle(Game *, Direction);
 
 int runAGhostACycle(Game *, Ghost *);
 
+int mod(int a, int b);
+
+int distance(Point p1, Point p2);
+
+Point destination(CharacterType ghostType, Coordinates* blinky, Coordinates* pacman, Coordinates* me, Stage* stage);
+
 void makeANewRoom(Game *);
 
 void moveACharacter(Coordinates *, Stage *);

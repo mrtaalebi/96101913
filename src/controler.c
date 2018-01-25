@@ -3,10 +3,7 @@
 #include "controler.h"
 #include "view.h"
 #include "input.h"
-
-int mod(int a, int b);
-
-Point destination(CharacterType ghostType, Coordinates* blinky, Coordinates* pacman, Stage* stage) ;
+#include "models.h"
 
 int runACycle(Game *game, Direction pacmanDirection) {
     game->stage.cycles++;
@@ -132,12 +129,17 @@ int runAGhostACycle(Game *game, Ghost *ghost) {
     }
 
     if (ghost->coordinates.waitedCycles == ghost->coordinates.cyclesPerMove) {
-        ghost->coordinates.waitedCycles = 0;
+        ghost->coordinates.waitedCycles = 1;
         Point intOn = {ghost->coordinates.currentPosition.x / TILE, ghost->coordinates.currentPosition.y / TILE};
-        Point intTo = destination(ghost->coordinates.characterType, &game->blinky.coordinates, &game->pacman.coordinates, &game->stage);
-        if (ghost->defensiveCyclesLeft != 0) {
+        Point intTo;
+        if (ghost->defensiveCyclesLeft > 0) {
+            intTo.x = getNextInCircular(2 * ghost->coordinates.startPosition.x - game->pacman.coordinates.currentPosition.x, game->stage.n);
+            intTo.y = getNextInCircular(2 * ghost->coordinates.startPosition.y - game->pacman.coordinates.currentPosition.y, game->stage.m);
+        } else if (ghost->defensiveCyclesLeft < 0) {
             intTo.x = ghost->coordinates.startPosition.x;
             intTo.y = ghost->coordinates.startPosition.y;
+        } else {
+            intTo = destination(ghost->coordinates.characterType, &game->blinky.coordinates, &game->pacman.coordinates, &ghost->coordinates, &game->stage);
         }
         intTo.x /= TILE;
         intTo.y /= TILE;
@@ -153,17 +155,49 @@ int runAGhostACycle(Game *game, Ghost *ghost) {
         ghost->coordinates.waitedCycles++;
 }
 
-Point destination(CharacterType ghostType, Coordinates* blinky, Coordinates* pacman, Stage* stage) {
-    return pacman->currentPosition;
+Point destination(CharacterType ghostType, Coordinates* blinky, Coordinates* pacman, Coordinates* me, Stage* stage) {
+    int dx[6] = {0, -TILE, 0, TILE, 0, 0};
+    int dy[6] = {0, 0, -TILE, 0, TILE, 0};
+    //return pacman->currentPosition;
+    Point result;
     switch (ghostType) {
         case CHARACTER_BLINKY:
             return pacman->currentPosition;
         case CHARACTER_PINKY:
-            break;
+            result = pacman->currentPosition;
+            result.x = getNextInCircular(result.x + 4 * dx[pacman->direction], stage->n);
+            result.y = getNextInCircular(result.y + 4 * dy[pacman->direction], stage->m);
+            while (!areOnTheSameExactPosition(result, pacman->currentPosition)) {
+                Point wayToPacman = result;
+                bool free = true;
+                while (!areOnTheSameExactPosition(wayToPacman, pacman->currentPosition)) {
+                    if (stage->tiles[wayToPacman.x / TILE][wayToPacman.y / TILE] == BLOCK) {
+                        free = false;
+                        break;
+                    }
+                    wayToPacman.x = getNextInCircular(wayToPacman.x - dx[pacman->direction], stage->n);
+                    wayToPacman.y = getNextInCircular(wayToPacman.y - dy[pacman->direction], stage->m);
+                }
+                if (free) {
+                    return result;
+                }
+                result.x = getNextInCircular(result.x - dx[pacman->direction], stage->n);
+                result.y = getNextInCircular(result.y - dy[pacman->direction], stage->m);
+            }
+            return result;
         case CHARACTER_CLYDE:
-            break;
+            result = pacman->currentPosition;
+            if (abs(result.x - me->currentPosition.x) + abs(result.y - me->currentPosition.y) > TILE * 12) {
+                return result;
+            }
+            result.x = TILE * 28;
+            result.y = TILE * 5;
+            return result;
         case CHARACTER_INKY:
-            break;
+            result = pacman->currentPosition;
+            result.x = getNextInCircular(2 * (pacman->currentPosition.x + 2 * dx[pacman->direction]) - blinky->currentPosition.x, stage->n);
+            result.y = getNextInCircular(2 * (pacman->currentPosition.y + 2 * dy[pacman->direction]) - blinky->currentPosition.y, stage->m);
+            return result;
         default: return pacman->currentPosition;
     }
 
@@ -173,7 +207,7 @@ Point destination(CharacterType ghostType, Coordinates* blinky, Coordinates* pac
 Direction shortestPath(Stage* stage, Point on, Point to) {
     int n = stage->n;
     int m = stage->m;
-    Point queue[n * m];
+    Point* queue = malloc(sizeof(Point) * n * m);
     int front = 0;
     int back = 1;
     Direction way[n][m];
@@ -185,10 +219,10 @@ Direction shortestPath(Stage* stage, Point on, Point to) {
         }
     }
     visited[on.x][on.y] = true;
-    way[on.x - 1][on.y] = DIR_UP;
-    way[on.x + 1][on.y] = DIR_DOWN;
-    way[on.x][on.y - 1] = DIR_LEFT;
-    way[on.x][on.y + 1] = DIR_RIGHT;
+    way[mod(on.x - 1, n)][on.y] = DIR_UP;
+    way[mod(on.x + 1, n)][on.y] = DIR_DOWN;
+    way[on.x][mod(on.y - 1, m)] = DIR_LEFT;
+    way[on.x][mod(on.y + 1, m)] = DIR_RIGHT;
     queue[0] = on;
     while (back > front) {
         // success condition
@@ -215,7 +249,6 @@ Direction shortestPath(Stage* stage, Point on, Point to) {
             }
         }
     }
-    printf("%d\n", way[queue[front].x][queue[front].y]);
     return way[queue[front].x][queue[front].y];
 }
 
@@ -307,7 +340,11 @@ void checkPacmanAndGhostsCollision(Game *game) {
 }
 
 bool areNearEnoughToStrike(Point p1, Point p2) {
-    return ((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y)) < (TILE * TILE * 2);
+    return distance(p1, p2) < (TILE * 1.5);
+}
+
+int distance(Point p1, Point p2) {
+    return (int) sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
 }
 
 

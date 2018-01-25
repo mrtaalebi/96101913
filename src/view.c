@@ -24,6 +24,16 @@ void logSDLError() {
 }
 
 void initiateWindow() {
+
+    // todo: make the window responsive :)))
+
+    SDL_DisplayMode DM;
+    SDL_GetCurrentDisplayMode(0, &DM);
+    int Width = DM.w;
+    int Height = DM.h;
+
+
+
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         logSDLError();
     }
@@ -47,6 +57,8 @@ void initiateWindow() {
     littleRect->w = MENU_WIDTH - TILE * 4;
     littleRect->h = TILE * 5;
     SDL_FreeSurface(littleImage);
+
+
     scoreAnimated = malloc(sizeof(Name));
     scoreAnimated->string = " ";
     scoreAnimated->next = NULL;
@@ -75,13 +87,23 @@ void paintStage(Game* game) {
 }
 
 void drawSavedTexts() {
+    Name* on = scoreAnimated;
+    if (on->next != NULL) {
+        stringRGBA(renderer, (Sint16) (on->next->x - TILE * 2 + rand() % (TILE * 4)),
+                   (Sint16) (on->next->y - TILE * 2 + rand() % (TILE * 4)),
+                   on->next->string, on->next->color.r, on->next->color.g, on->next->color.b, on->next->color.a);
+        on->next->cyclesRemaining--;
+        if (on->next->cyclesRemaining == 0)
+            on->next = on->next->next;
+    }/*
     while (true) {
         stringRGBA(renderer, (Sint16) (scoreAnimated->x - TILE * 2 + rand() % (TILE * 4)),
                    (Sint16) (scoreAnimated->y - TILE * 2 + rand() % (TILE * 4)),
                    scoreAnimated->string, scoreAnimated->color.r, scoreAnimated->color.g, scoreAnimated->color.b, scoreAnimated->color.a);
-        if (scoreAnimated->next == NULL) break;
+        Name* on = scoreAnimated;
         scoreAnimated = scoreAnimated->next;
-    }
+        if (scoreAnimated == NULL) break;
+    }*/
 }
 
 void drawText(char* text, int x, int y, SDL_Color color) {
@@ -93,7 +115,9 @@ void drawText(char* text, int x, int y, SDL_Color color) {
     new->cyclesRemaining = SCORE_ON_CYCLES;
     new->next = NULL;
     Name* on = scoreAnimated;
-    while (on->next != NULL) on = on->next;
+    while (on->next != NULL) {
+        on = on->next;
+    }
     on->next = new;
 }
 
@@ -310,9 +334,13 @@ void drawHelp() {
     renderPresent();
 }
 
-void drawHallOfFame() {
+void drawHallOfFame(char* name, int score) {
     drawMenu();
     SDL_Color color;
+    char* input = malloc(sizeof(char) * 50);
+    sprintf(input, "%s %10d", name, score);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + BUTTON_HEIGHT * .25 + TILE / 2),
+               input ,color.r, color.g, color.b, color.a);
     Fame* fames = readFames();
     for (int i = 0; i < 10; ++i) {
         color = COLOR_TEXT_BUTTON;

@@ -62,7 +62,7 @@ void startPlayingGame(Game* game) {
 }
 
 void startHallOfFame() {
-    drawHallOfFame();
+    drawHallOfFame(" ", 0);
 }
 
 void startCredits() {

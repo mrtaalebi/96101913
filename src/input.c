@@ -24,10 +24,10 @@ int listener() {
             key_event = DIR_LEFT;
             break;
         case SDLK_ESCAPE:
-                key_event = KEY_ESCAPE;
+            key_event = KEY_ESCAPE;
             break;
         case SDLK_RETURN:
-                key_event = KEY_RETURN;
+            key_event = KEY_RETURN;
             break;
     }
     return key_event;
@@ -103,7 +103,7 @@ void characterCoordinatesToPixels(Coordinates *coordinates) {
 
 Fame* readFames() {
     FILE* fames_txt = fopen("fames", "r");
-    Fame *fames = malloc(sizeof(Fame));
+    Fame *fames = malloc(sizeof(Fame) * 20);
     for (int i = 0; i < 10; ++i) {
         fames[i].name = malloc(20);
         fscanf(fames_txt, "%s %d %d %d %d %d\n", fames[i].name, &fames[i].score.totalScore, &fames[i].score.cheeseCount,
