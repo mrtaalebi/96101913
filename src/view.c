@@ -323,16 +323,50 @@ void drawPauseMenu(Menu* menu) {
 void drawCredits() {
     drawMenu();
     SDL_Color color = COLOR_TEXT_CREDITS;
-    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE),
-               "credit goes here!" ,color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 2),
+               "a simple FOP project" ,color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 3),
+               "made by C CMAKE" ,color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 4),
+               "using SDL" ,color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 8),
+               "everything: mrtaalebi!" ,color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 12),
+               "special thanks to" ,color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 13),
+               "sesajad" ,color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 - TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 16),
+               "the.doors.are.locked@gmail.com" ,color.r, color.g, color.b, color.a);
     renderPresent();
 }
 
 void drawHelp() {
     drawMenu();
     SDL_Color color = COLOR_TEXT_CREDITS;
-    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE),
-               "help goes here!" ,color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 2),
+               "arrow keys to move", color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 3),
+               "pacman is always faster", color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 4),
+               "the higher the level", color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 5),
+               "the faster the characters", color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 7),
+               "red ghost", color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 8),
+               "will chase you", color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 10),
+               "pink ghost", color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 11),
+               "will ambush you", color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 13),
+               "cyan ghost", color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 14),
+               "will wander around", color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 16),
+               "orange ghost", color.r, color.g, color.b, color.a);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + TILE * 17),
+               "will never catch you", color.r, color.g, color.b, color.a);
     renderPresent();
 }
 
