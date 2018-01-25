@@ -5,6 +5,7 @@
 #include "input.h"
 #include "controler.h"
 #include "models.h"
+#include "gui.h"
 
 int main() {
     initiateWindow();
@@ -89,28 +90,32 @@ int main() {
                 }
                 break;
             case HALL_OF_FAME:
-
-                SDL_StartTextInput();
-
                 nowOn = HALL_OF_FAME;
                 startHallOfFame();
-                bool onInput = true;
-                char* name = malloc(sizeof(char) * 20);
-                char* send = malloc(sizeof(char) * 20);
-                int index = 0;
-                while (onInput) {
-                    int event = listener();
-                    if (event == SDLK_RETURN || index == 20) {
-                        onInput = false;
-                    } else if (event == SDLK_BACKSPACE && index > 0) {
-                        index--;
-                    } else if (event >= SDLK_a && event <= SDLK_z) {
-                        //todo: fuck this shit!! event is not actually what you want!! its different all the way:())
-                        name[index++] = (char) event;
-                        printf("%c\n", name[index-1]);
+                if (lost) {
+                    bool onInput = true;
+                    char *name = malloc(sizeof(char) * 18);
+                    int index = 0;
+                    while (onInput) {
+                        int event = listener();
+                        if (event == KEY_RETURN || index == 18) {
+                            onInput = false;
+                        } else if (event == SDLK_BACKSPACE && index > 0) {
+                            name[index--] = '\0';
+                        } else if (event >= 'a' && event <= 'z') {
+                            name[index] = (char) event;
+                            printf("%c\n", name[index]);
+                            index++;
+                            name[index] = '\0';
+                        }
+                        drawHallOfFame(name, game.pacman.score.totalScore);
                     }
-                    strncpy(send, name, (size_t) index / 4);
-                    drawHallOfFame(send, game.pacman.score.totalScore);
+                    Fame record;
+                    record.name = name;
+                    record.score = game.pacman.score;
+                    writeFames(record);
+                    initialize(&game);
+                    lost = false;
                 }
                 bool onHall = true;
                 while (onHall) {

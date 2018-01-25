@@ -5,6 +5,8 @@
 #include "view.h"
 #include "utils.h"
 #include "input.h"
+#include "gui.h"
+#include "models.h"
 
 SDL_Window* win;
 SDL_Renderer* renderer;
@@ -338,16 +340,22 @@ void drawHallOfFame(char* name, int score) {
     drawMenu();
     SDL_Color color;
     char* input = malloc(sizeof(char) * 50);
-    sprintf(input, "%s %10d", name, score);
+    sprintf(input, "%d", score);
+    stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + BUTTON_HEIGHT * .25),
+               input ,color.r, color.g, color.b, color.a);
+    sprintf(input, "%s", name);
     stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + BUTTON_HEIGHT * .25 + TILE / 2),
                input ,color.r, color.g, color.b, color.a);
     Fame* fames = readFames();
     for (int i = 0; i < 10; ++i) {
         color = COLOR_TEXT_BUTTON;
-        char * string = malloc(100);
-        sprintf(string, "% .2d- %s % 16d", i + 1, fames[i].name, fames[i].score.totalScore);
+        char* string = malloc(sizeof(char) * 25);
+        sprintf(string, "%02d %s", i + 1, fames[i].name);
         stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + BUTTON_HEIGHT * .75 * (i + 1) + TILE),
                   string ,color.r, color.g, color.b, color.a);
+        sprintf(string, "%d", fames[i].score.totalScore);
+        stringRGBA(renderer, (Sint16) ((SCREEN_WIDTH - BUTTON_WIDTH) / 2 + BUTTON_WIDTH - TILE), (Sint16) ((SCREEN_HEIGHT - MENU_HEIGHT) / 2 + BUTTON_HEIGHT * .75 * (i + 1) + TILE),
+                   string ,color.r, color.g, color.b, color.a);
     }
     renderPresent();
 }

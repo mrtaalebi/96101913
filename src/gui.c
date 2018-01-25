@@ -62,6 +62,7 @@ void startPlayingGame(Game* game) {
 }
 
 void startHallOfFame() {
+    SDL_StartTextInput();
     drawHallOfFame(" ", 0);
 }
 

@@ -2,6 +2,8 @@
 #include <stdbool.h>
 
 #include "input.h"
+#include "gui.h"
+#include "models.h"
 
 int listener() {
     SDL_Event event;
@@ -29,6 +31,8 @@ int listener() {
         case SDLK_RETURN:
             key_event = KEY_RETURN;
             break;
+    } else if (event.type == SDL_TEXTINPUT) {
+        return event.text.text[0];
     }
     return key_event;
 }
@@ -114,8 +118,34 @@ Fame* readFames() {
 }
 
 
-void writeFames(Fame* fames) {
-    FILE* fames_txt = fopen("fames", "w");
+void writeFames(Fame newFames) {
+    FILE* fames_txt = fopen("fames", "r");
+    Fame *fames = malloc(sizeof(Fame) * 20);
+    Fame min;
+    int index = -1;
+    min.score.totalScore = 1000000;
+    min.name = malloc(sizeof(char) * 20);
+    for (int i = 0; i < 10; ++i) {
+        fames[i].name = malloc(20);
+        fscanf(fames_txt, "%s %d %d %d %d %d\n", fames[i].name, &fames[i].score.totalScore, &fames[i].score.cheeseCount,
+               &fames[i].score.pineappleCount, &fames[i].score.cherryCount, &fames[i].score.ghostsKilled);
+        if (fames[i].score.totalScore < min.score.totalScore) {
+            min = fames[i];
+            index = i;
+        }
+    }
+    fclose(fames_txt);
+    if (newFames.score.totalScore > min.score.totalScore && index != -1) fames[index] = newFames;
+    for (int i = 0; i < 10; ++i) {
+        for (int j = 0; j < 9; ++j) {
+            if (fames[i].score.totalScore < fames[i + 1].score.totalScore) {
+                min = fames[i];
+                fames[i] = fames[i + 1];
+                fames[i + 1] = min;
+            }
+        }
+    }
+    fames_txt = fopen("fames", "w");
     for (int i = 0; i < 10; ++i) {
         fprintf(fames_txt, "%s %d %d %d %d %d\n", fames[i].name, fames[i].score.totalScore, fames[i].score.cheeseCount,
                 fames[i].score.pineappleCount, fames[i].score.cherryCount, fames[i].score.ghostsKilled);

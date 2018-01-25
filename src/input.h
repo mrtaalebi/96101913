@@ -18,6 +18,6 @@ void characterCoordinatesToPixels(Coordinates *);
 
 Fame* readFames();
 
-void writeFames(Fame*);
+void writeFames(Fame);
 
 #endif

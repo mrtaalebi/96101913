@@ -123,7 +123,7 @@ int runAGhostACycle(Game *game, Ghost *ghost) {
         ghost->coordinates.isDefensive = true;
         ghost->coordinates.cyclesPerMove = GHOST_DEFENSIVE_CYCLES_PER_MOVE;
     } else {
-        ghost->coordinates.cyclesPerMove = GHOST_AGGRESSIVE_CYCLES_PER_MOVE;
+        ghost->coordinates.cyclesPerMove = GHOST_REVIVE_CYCLES_PER_MOVE;
         if (areOnTheSameExactPosition(ghost->coordinates.currentPosition, ghost->coordinates.startPosition))
             ghost->defensiveCyclesLeft = 0;
     }
@@ -187,16 +187,20 @@ Point destination(CharacterType ghostType, Coordinates* blinky, Coordinates* pac
             return result;
         case CHARACTER_CLYDE:
             result = pacman->currentPosition;
-            if (abs(result.x - me->currentPosition.x) + abs(result.y - me->currentPosition.y) > TILE * 12) {
+            if (abs(result.x - me->currentPosition.x) + abs(result.y - me->currentPosition.y) > TILE * 8) {
                 return result;
             }
-            result.x = TILE * 28;
-            result.y = TILE * 5;
+            result.x = TILE * 26 + (rand() % (TILE * 2) - TILE * 1);
+            result.y = TILE * 6 + (rand() % (TILE * 2) - TILE * 1);
             return result;
         case CHARACTER_INKY:
             result = pacman->currentPosition;
-            result.x = getNextInCircular(2 * (pacman->currentPosition.x + 2 * dx[pacman->direction]) - blinky->currentPosition.x, stage->n);
-            result.y = getNextInCircular(2 * (pacman->currentPosition.y + 2 * dy[pacman->direction]) - blinky->currentPosition.y, stage->m);
+            result.x = 2 * (pacman->currentPosition.x + 2 * dx[pacman->direction]) - blinky->currentPosition.x;
+            if (result.x <= 4 * TILE) result.x = 4 * TILE;
+            else if (result.x >= 32 * TILE) result.x = 33 * TILE;
+            result.y = 2 * (pacman->currentPosition.y + 2 * dy[pacman->direction]) - blinky->currentPosition.y;
+            if (result.y <= 1 * TILE) result. y = 1 * TILE;
+            else if (result.y >= 26 * TILE) result.y = 26 * TILE;
             return result;
         default: return pacman->currentPosition;
     }
@@ -389,6 +393,14 @@ void restartAGhostByPacmanDeath(Ghost *ghost) {
 }
 
 void makeANewRoom(Game *game) {
+    if (PACMAN_CYCLES_PER_MOVE > 1)
+        PACMAN_CYCLES_PER_MOVE--;
+    if (GHOST_DEFENSIVE_CYCLES_PER_MOVE > 1)
+        GHOST_DEFENSIVE_CYCLES_PER_MOVE--;
+    if (GHOST_AGGRESSIVE_CYCLES_PER_MOVE > 1)
+        GHOST_AGGRESSIVE_CYCLES_PER_MOVE--;
+    if (GHOST_REVIVE_CYCLES_PER_MOVE > 1)
+        GHOST_REVIVE_CYCLES_PER_MOVE--;
     int roomNumber = game->stage.roomNumber;
     int cycles = game->stage.cycles;
     int pacmanHearts = game->pacman.hearts;
