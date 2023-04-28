@@ -1,11 +1,11 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#include "gui.h"
 #include "view.h"
 #include "input.h"
 #include "controler.h"
 #include "models.h"
-#include "gui.h"
 
 int main() {
     initiateWindow();
